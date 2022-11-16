@@ -1,0 +1,811 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     28786,        803]
+NotebookOptionsPosition[     25109,        739]
+NotebookOutlinePosition[     25524,        755]
+CellTagsIndexPosition[     25481,        752]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[ButtonBox["Metallic Ratios",
+ BaseStyle->"Hyperlink",
+ ButtonData->{
+   URL["http://rosettacode.org/wiki/Metallic_ratios"], None},
+ ButtonNote->"http://rosettacode.org/wiki/Metallic_ratios"]], "Title",
+ CellChangeTimes->{{3.835635094492403*^9, 3.8356350979084*^9}, {
+  3.835647005680549*^9, 
+  3.835647005680549*^9}},ExpressionUUID->"a3081651-4989-4668-802a-\
+a5b05bd6b6df"],
+
+Cell[TextData[{
+ "Many people have heard of the Golden ratio, phi ",
+ Cell[BoxData[
+  FormBox["\[Phi]", TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "6ea86f7c-b7e8-47c3-8a8f-e7191fc62f7a"],
+ ". Phi is just one of a series of related ratios that are referred to as the \
+\[OpenCurlyDoubleQuote]Metallic ratios\[CloseCurlyDoubleQuote].\n\nThe Golden \
+ratio was discovered and named by ancient civilizations as it was thought to \
+be the most pure and beautiful (like Gold). The Silver ratio was was also \
+known to the early Greeks, though was not named so until later as a nod to \
+the Golden ratio to which it is closely related. The series has been extended \
+to encompass all of the related ratios and was given the general name \
+Metallic ratios (or Metallic means). Somewhat incongruously as the original \
+Golden ratio referred to the adjective \[OpenCurlyDoubleQuote]golden\
+\[CloseCurlyDoubleQuote] rather than the metal \[OpenCurlyDoubleQuote]gold\
+\[CloseCurlyDoubleQuote]."
+}], "Text",
+ CellChangeTimes->{{3.835635104237602*^9, 
+  3.8356351436856637`*^9}},ExpressionUUID->"960a5250-fdc5-44ef-b4ab-\
+68a94be613aa"],
+
+Cell["\<\
+Metallic ratios are the real (positive) roots of the general form equation :\
+\>", "Text",
+ CellChangeTimes->{{3.8356351632153254`*^9, 3.835635165334715*^9}, {
+  3.835635350295481*^9, 
+  3.8356353523335776`*^9}},ExpressionUUID->"1594f8d5-24ba-477f-b57c-\
+fa892dd092fe"],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[GridBox[{
+    {GridBox[{
+       {
+        RowBox[{
+         RowBox[{
+          SuperscriptBox["x", "2"], "-", 
+          RowBox[{"b", " ", "x"}], "-", "1"}], "=", "0"}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{"Center"}}}]}
+   },
+   GridBoxItemSize->{"Columns" -> {{
+        Scaled[0.96]}}}], 
+  TraditionalForm]],ExpressionUUID->"1f54ea2f-c9f3-4710-845e-3a7833fe3375"]], \
+"Text",
+ CellChangeTimes->{{3.8356351773860435`*^9, 
+  3.835635189046327*^9}},ExpressionUUID->"5ed80237-3b57-429f-b116-\
+1669070543d3"],
+
+Cell["Hence the ratios are given by ", "Text",
+ CellChangeTimes->{{3.835635205065301*^9, 
+  3.8356352139234285`*^9}},ExpressionUUID->"8091774e-6459-4969-aa3d-\
+e65484e5dea7"],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[GridBox[{
+    {GridBox[{
+       {
+        RowBox[{"x", " ", "=", " ", 
+         FractionBox[
+          RowBox[{"b", "+", 
+           SqrtBox[
+            RowBox[{
+             SuperscriptBox["b", "2"], "+", " ", "4"}]]}], "2"]}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{"Center"}}}]}
+   },
+   GridBoxItemSize->{"Columns" -> {{
+        Scaled[0.96]}}}], 
+  TraditionalForm]],ExpressionUUID->"1412a335-ee53-4f56-922b-12bb0acf5dcf"]], \
+"Text",
+ CellChangeTimes->{{3.8356352500403614`*^9, 3.8356353730551834`*^9}, {
+  3.835635610259798*^9, 
+  3.835635610259798*^9}},ExpressionUUID->"02dfa583-bb8f-4fce-8bb6-\
+d6d87049001c"],
+
+Cell[TextData[{
+ "The names are given below for assorted values of ",
+ Cell[BoxData[
+  FormBox["b", TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "f9d500c2-6021-4bdd-ad85-a950970f9a7e"],
+ ":"
+}], "Text",
+ CellChangeTimes->{{3.835635877595456*^9, 
+  3.835635911310143*^9}},ExpressionUUID->"f6a18f3f-d5d1-4a73-9b9e-\
+7a7cc2f81975"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"ratioNames", "=", 
+   RowBox[{"{", 
+    RowBox[{
+    "\"\<Platinum\>\"", ",", "\"\<Golden\>\"", ",", "\"\<Silver\>\"", ",", 
+     "\"\<Bronze\>\"", ",", "\"\<Copper\>\"", ",", "\"\<Nickel\>\"", ",", 
+     "\"\<Aluminum\>\"", ",", "\"\<Iron\>\"", ",", "\"\<Tin\>\"", ",", 
+     "\"\<Lead\>\""}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ratio", "[", "b_", "]"}], ":=", 
+  FractionBox[
+   RowBox[{"b", "+", 
+    SqrtBox[
+     RowBox[{
+      SuperscriptBox["b", "2"], "+", "4"}]]}], "2"]}], "\[IndentingNewLine]", 
+ RowBox[{"Grid", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Join", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"{", 
+       RowBox[{"\"\<Name\>\"", ",", "\"\<b\>\"", ",", "\"\<Value\>\""}], 
+       "}"}], "}"}], ",", 
+     RowBox[{"Table", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"ratioNames", "[", 
+          RowBox[{"[", "b", "]"}], "]"}], ",", 
+         RowBox[{"b", "-", "1"}], ",", 
+         RowBox[{"ratio", "[", "b", "]"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"b", ",", "10"}], "}"}]}], "]"}]}], "]"}], ",", 
+   RowBox[{"Frame", "\[Rule]", "All"}], ",", 
+   RowBox[{"Background", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"None", ",", 
+      RowBox[{"{", "LightGray", "}"}]}], "}"}]}]}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.8356354767824316`*^9, 3.835635739575308*^9}, {
+  3.835635783511417*^9, 3.8356358599949136`*^9}},
+ CellLabel->"In[33]:=",ExpressionUUID->"e4c43066-c91e-42a6-8d2f-7de3fd8401aa"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"Name\"\>", "\<\"b\"\>", "\<\"Value\"\>"},
+    {"\<\"Platinum\"\>", "0", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"1", "+", 
+        SqrtBox["5"]}], ")"}]}]},
+    {"\<\"Golden\"\>", "1", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"2", "+", 
+        RowBox[{"2", " ", 
+         SqrtBox["2"]}]}], ")"}]}]},
+    {"\<\"Silver\"\>", "2", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"3", "+", 
+        SqrtBox["13"]}], ")"}]}]},
+    {"\<\"Bronze\"\>", "3", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"4", "+", 
+        RowBox[{"2", " ", 
+         SqrtBox["5"]}]}], ")"}]}]},
+    {"\<\"Copper\"\>", "4", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"5", "+", 
+        SqrtBox["29"]}], ")"}]}]},
+    {"\<\"Nickel\"\>", "5", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"6", "+", 
+        RowBox[{"2", " ", 
+         SqrtBox["10"]}]}], ")"}]}]},
+    {"\<\"Aluminum\"\>", "6", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"7", "+", 
+        SqrtBox["53"]}], ")"}]}]},
+    {"\<\"Iron\"\>", "7", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"8", "+", 
+        RowBox[{"2", " ", 
+         SqrtBox["17"]}]}], ")"}]}]},
+    {"\<\"Tin\"\>", "8", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"9", "+", 
+        SqrtBox["85"]}], ")"}]}]},
+    {"\<\"Lead\"\>", "9", 
+     RowBox[{
+      FractionBox["1", "2"], " ", 
+      RowBox[{"(", 
+       RowBox[{"10", "+", 
+        RowBox[{"2", " ", 
+         SqrtBox["26"]}]}], ")"}]}]}
+   },
+   AutoDelete->False,
+   GridBoxBackground->{"Columns" -> {{None}}, "Rows" -> {
+       GrayLevel[0.85]}},
+   GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{{3.8356356864722724`*^9, 3.8356356946494074`*^9}, 
+   3.8356357414572763`*^9, {3.8356357839793367`*^9, 3.835635860513918*^9}},
+ CellLabel->"Out[35]=",ExpressionUUID->"c2a96ff4-2026-45c9-9c85-1f1b801fd146"]
+}, {2}]],
+
+Cell["\<\
+There are other ways to find the Metallic ratios; one, (the focus of this \
+task) is through successive approximations of Lucas sequences. 
+
+A traditional Lucas sequence is of the form: \
+\>", "Text",
+ CellChangeTimes->{{3.8356359686352916`*^9, 
+  3.83563597402026*^9}},ExpressionUUID->"822525a0-5cec-4212-a2e2-\
+62f9b7967a50"],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[GridBox[{
+    {GridBox[{
+       {
+        RowBox[{
+         RowBox[{
+          SubscriptBox["x", "n"], "=", 
+          RowBox[{
+           RowBox[{"P", " ", 
+            SubscriptBox["x", 
+             RowBox[{"n", "-", "1"}]]}], " ", "+", " ", 
+           RowBox[{"Q", " ", 
+            SubscriptBox["x", 
+             RowBox[{"n", "-", "2"}]]}]}]}], "\[IndentingNewLine]", 
+         RowBox[{
+          SubscriptBox["x", "0"], "=", "0"}], "\[IndentingNewLine]", 
+         RowBox[{
+          SubscriptBox["x", "1"], "=", "1"}]}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{"="}}}]}
+   },
+   GridBoxItemSize->{"Columns" -> {{
+        Scaled[0.96]}}}], 
+  TraditionalForm]],ExpressionUUID->"87d039ae-627d-495f-9c73-04bfc02fe60e"]], \
+"Text",
+ CellChangeTimes->{{3.835636036307269*^9, 3.835636099963369*^9}, {
+  3.835636200022453*^9, 
+  3.8356362033163347`*^9}},ExpressionUUID->"ba4dd0f9-4f0c-4d8a-a579-\
+d52477e759c3"],
+
+Cell[TextData[{
+ "For our purposes, set ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"P", "=", "b"}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "ff0f2c21-91fd-4cb3-9e65-027f1e94f263"],
+ " and ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"Q", "=", 
+    RowBox[{"-", "1"}]}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "dae11876-501b-400a-b6b9-8d77f104cff7"],
+ " to get"
+}], "Text",
+ CellChangeTimes->{{3.835636151920885*^9, 
+  3.835636185386602*^9}},ExpressionUUID->"2b94e0f1-9b78-49e6-8fa2-\
+01ca28efa9bd"],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[GridBox[{
+    {GridBox[{
+       {
+        RowBox[{
+         RowBox[{
+          SubscriptBox["x", "n"], "=", 
+          RowBox[{
+           RowBox[{"b", " ", 
+            SubscriptBox["x", 
+             RowBox[{"n", "-", "1"}]]}], " ", "-", " ", 
+           SubscriptBox["x", 
+            RowBox[{"n", "-", "2"}]]}]}], "\[IndentingNewLine]", 
+         RowBox[{
+          SubscriptBox["x", "1"], "=", "1"}], "\[IndentingNewLine]", 
+         RowBox[{
+          SubscriptBox["x", "2"], "=", "1"}]}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{"="}}}]}
+   },
+   GridBoxItemSize->{"Columns" -> {{
+        Scaled[0.96]}}}], 
+  TraditionalForm]],ExpressionUUID->"caa751fb-6d6f-430f-b18e-205fb09de92c"]], \
+"Text",
+ CellChangeTimes->{{3.835636036307269*^9, 3.835636099963369*^9}, {
+  3.835636200022453*^9, 
+  3.835636228765525*^9}},ExpressionUUID->"a1daec96-3433-4eaa-bd0c-\
+3d1a41da1fe4"],
+
+Cell[TextData[{
+ "To approximate the metallic ratios, we can just divide ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox[
+    SubscriptBox["x", "n"], 
+    SubscriptBox["x", 
+     RowBox[{"n", "-", "1"}]]], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "5dccf995-9896-4daa-a554-429375a1ce37"]
+}], "Text",
+ CellChangeTimes->{{3.8356363525715055`*^9, 
+  3.835636385611405*^9}},ExpressionUUID->"43b2bfa0-b346-41a0-b3d7-\
+f6a9d35a6cab"],
+
+Cell[CellGroupData[{
+
+Cell["Tasks", "Section",
+ CellChangeTimes->{{3.835636431785017*^9, 
+  3.835636432418125*^9}},ExpressionUUID->"8525fb4d-f7b3-45e4-83ba-\
+7ae4e230b33e"],
+
+Cell["For each of the first 10 Metallic Ratios; b = 0, ..., 9", "Text",
+ CellChangeTimes->{{3.835636443550478*^9, 
+  3.8356364631864614`*^9}},ExpressionUUID->"79efbc81-3e6e-4bf3-88cb-\
+7f117bed1969"],
+
+Cell[" Generate the corresponding \[OpenCurlyDoubleQuote]Lucas\
+\[CloseCurlyDoubleQuote] sequence.", "Item",
+ CellChangeTimes->{{3.8356364701282673`*^9, 
+  3.8356364744497414`*^9}},ExpressionUUID->"35367652-69df-4be2-a5ac-\
+b6e3cfc787ed"],
+
+Cell["\<\
+ Show here, on this page, at least the first 15 elements of the \
+\[OpenCurlyDoubleQuote]Lucas\[CloseCurlyDoubleQuote] sequence.\
+\>", "Item",
+ CellChangeTimes->{{3.8356364701282673`*^9, 
+  3.8356364871457863`*^9}},ExpressionUUID->"d4477056-cdd5-42b6-837f-\
+0fc255d0047f"],
+
+Cell["\<\
+ Using successive approximations, calculate the value of the ratio accurate \
+to 32 decimal places.\
+\>", "Item",
+ CellChangeTimes->{{3.8356364701282673`*^9, 
+  3.83563648808467*^9}},ExpressionUUID->"12c1d2bc-2db5-4320-a1a1-\
+8cd007a7fcde"],
+
+Cell["\<\
+ Show the value of the approximation at the required accuracy.\
+\>", "Item",
+ CellChangeTimes->{{3.8356364701282673`*^9, 
+  3.8356364956724663`*^9}},ExpressionUUID->"8d368fb4-edf4-4f03-b948-\
+9ab8dd74c97f"],
+
+Cell["\<\
+ Show the value of n when the approximation reaches the required accuracy \
+(How many iterations did it take?).\
+\>", "Item",
+ CellChangeTimes->{{3.8356364701282673`*^9, 
+  3.835636506822509*^9}},ExpressionUUID->"b1e36f8f-8c24-4a23-9bb2-\
+41f6196f6a47"],
+
+Cell["\<\
+(Optional) stretch goal - Show the value and number of iterations n, to \
+approximate the Golden ratio to 256 decimal places. \
+\>", "Item",
+ CellChangeTimes->{{3.8356364701282673`*^9, 
+  3.835636514509017*^9}},ExpressionUUID->"63e95b1e-6831-49d8-97ad-\
+3b8be6bdd419"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Tasks 1 and 2", "Section",
+ CellChangeTimes->{{3.8356365634080715`*^9, 
+  3.8356365685428853`*^9}},ExpressionUUID->"8fcd27b7-dee9-4b52-8410-\
+1f426bf2d6b8"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"MetallicLucas", "[", 
+   RowBox[{"b_Integer", ",", "numElms_Integer"}], "]"}], ":=", 
+  RowBox[{"NestList", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"b", " ", 
+         RowBox[{"#", "[", 
+          RowBox[{"[", "1", "]"}], "]"}]}], "+", 
+        RowBox[{"#", "[", 
+         RowBox[{"[", "2", "]"}], "]"}]}], ",", 
+       RowBox[{"#", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], "}"}], "&"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"1", ",", "1"}], "}"}], ",", "numElms"}], "\[IndentingNewLine]", 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"MetallicLucasSequence", "[", 
+   RowBox[{"b_Integer", ",", "numElms_Integer"}], "]"}], ":=", 
+  RowBox[{"Join", "[", 
+   RowBox[{
+    RowBox[{"{", "1", "}"}], ",", 
+    RowBox[{
+     RowBox[{"MetallicLucas", "[", 
+      RowBox[{"b", ",", "numElms"}], "]"}], "[", 
+     RowBox[{"[", 
+      RowBox[{"All", ",", "1"}], "]"}], "]"}]}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.8356365768485975`*^9, 3.8356366857942643`*^9}, {
+   3.835636767378107*^9, 3.8356368960724697`*^9}, {3.835636928286427*^9, 
+   3.8356369331609106`*^9}, {3.835636980281186*^9, 3.835637004321183*^9}, {
+   3.835637061794718*^9, 3.835637088741458*^9}, {3.8356371764182854`*^9, 
+   3.835637185466957*^9}, {3.8356372620528684`*^9, 3.8356373347951384`*^9}, 
+   3.8356543610328465`*^9},
+ CellLabel->"In[1]:=",ExpressionUUID->"49af6cbe-1b4b-4de7-9576-ad20d97378fc"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Column", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"MetallicLucasSequence", "[", 
+      RowBox[{"#", ",", "15"}], "]"}], "&"}], "/@", 
+    RowBox[{"Range", "[", 
+     RowBox[{"0", ",", "9"}], "]"}]}], ",", "Left", ",", "2"}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.8356371981868596`*^9, 3.8356372079373474`*^9}, {
+  3.835637314225227*^9, 3.835637322824192*^9}, {3.8356374252014728`*^9, 
+  3.835637482545418*^9}, {3.835637521533202*^9, 3.8356375340001674`*^9}, {
+  3.83565245616948*^9, 3.835652476020549*^9}},
+ CellLabel->"In[3]:=",ExpressionUUID->"fe9c0e01-199f-44f4-a4e5-401b8f8621db"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "1", ",", "1", ",", "1", ",", "1", ",", "1", ",", 
+       "1", ",", "1", ",", "1", ",", "1", ",", "1", ",", "1", ",", "1", ",", 
+       "1", ",", "1", ",", "1"}], "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "2", ",", "3", ",", "5", ",", "8", ",", "13", ",", 
+       "21", ",", "34", ",", "55", ",", "89", ",", "144", ",", "233", ",", 
+       "377", ",", "610", ",", "987", ",", "1597"}], "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "3", ",", "7", ",", "17", ",", "41", ",", "99", ",",
+        "239", ",", "577", ",", "1393", ",", "3363", ",", "8119", ",", 
+       "19601", ",", "47321", ",", "114243", ",", "275807", ",", "665857"}], 
+      "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "4", ",", "13", ",", "43", ",", "142", ",", "469", 
+       ",", "1549", ",", "5116", ",", "16897", ",", "55807", ",", "184318", 
+       ",", "608761", ",", "2010601", ",", "6640564", ",", "21932293", ",", 
+       "72437443"}], "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "5", ",", "21", ",", "89", ",", "377", ",", "1597", 
+       ",", "6765", ",", "28657", ",", "121393", ",", "514229", ",", 
+       "2178309", ",", "9227465", ",", "39088169", ",", "165580141", ",", 
+       "701408733", ",", "2971215073"}], "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "6", ",", "31", ",", "161", ",", "836", ",", "4341",
+        ",", "22541", ",", "117046", ",", "607771", ",", "3155901", ",", 
+       "16387276", ",", "85092281", ",", "441848681", ",", "2294335686", ",", 
+       "11913527111", ",", "61861971241"}], "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "7", ",", "43", ",", "265", ",", "1633", ",", 
+       "10063", ",", "62011", ",", "382129", ",", "2354785", ",", "14510839", 
+       ",", "89419819", ",", "551029753", ",", "3395598337", ",", 
+       "20924619775", ",", "128943316987", ",", "794584521697"}], "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "8", ",", "57", ",", "407", ",", "2906", ",", 
+       "20749", ",", "148149", ",", "1057792", ",", "7552693", ",", 
+       "53926643", ",", "385039194", ",", "2749201001", ",", "19629446201", 
+       ",", "140155324408", ",", "1000716717057", ",", "7145172343807"}], 
+      "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "9", ",", "73", ",", "593", ",", "4817", ",", 
+       "39129", ",", "317849", ",", "2581921", ",", "20973217", ",", 
+       "170367657", ",", "1383914473", ",", "11241683441", ",", "91317382001",
+        ",", "741780739449", ",", "6025563297593", ",", "48946287120193"}], 
+      "}"}]},
+    {
+     RowBox[{"{", 
+      RowBox[{
+      "1", ",", "1", ",", "10", ",", "91", ",", "829", ",", "7552", ",", 
+       "68797", ",", "626725", ",", "5709322", ",", "52010623", ",", 
+       "473804929", ",", "4316254984", ",", "39320099785", ",", 
+       "358197153049", ",", "3263094477226", ",", "29726047448083", ",", 
+       "270797521509973"}], "}"}]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+   GridBoxSpacings->{"Columns" -> {{Automatic}}, "Rows" -> {{2}}}],
+  "Column"]], "Output",
+ CellChangeTimes->{{3.835637204630724*^9, 3.8356372083448167`*^9}, {
+   3.835637323298338*^9, 3.8356373391492286`*^9}, {3.835637434796804*^9, 
+   3.835637483150425*^9}, {3.83563752527318*^9, 3.8356375344771104`*^9}, {
+   3.835652467139104*^9, 3.8356524760602007`*^9}, 3.8356544973838215`*^9, 
+   3.835654820857857*^9},
+ CellLabel->"Out[3]=",ExpressionUUID->"6e78bf24-c345-4211-8b1a-fd19a200440b"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Tasks 3 and 4", "Section",
+ CellChangeTimes->{{3.835637816115019*^9, 
+  3.83563782018163*^9}},ExpressionUUID->"287ca7ac-ec50-4784-96d8-\
+7c72b3ad7aee"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+I originally did the MetallicLucas function to make it easy to do all the \
+ratios, but I fear it would take up too much memory :(\
+\>", "Subsection",
+ CellChangeTimes->{{3.8356377623191404`*^9, 3.835637810331607*^9}, {
+  3.8356378503920665`*^9, 
+  3.835637859413659*^9}},ExpressionUUID->"5ff80b59-6562-43d0-85c7-\
+806c607d9bc4"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Divide", "@@@", 
+  RowBox[{"MetallicLucas", "[", 
+   RowBox[{"1", ",", "10"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.8356378672638645`*^9, 3.8356379032142997`*^9}, {
+  3.8356379864298854`*^9, 3.835638012290191*^9}, {3.835638130985977*^9, 
+  3.8356381337005568`*^9}},
+ CellLabel->"In[78]:=",ExpressionUUID->"7e79c0fa-9b92-4e80-985b-272fae9897ec"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1", ",", "2", ",", 
+   FractionBox["3", "2"], ",", 
+   FractionBox["5", "3"], ",", 
+   FractionBox["8", "5"], ",", 
+   FractionBox["13", "8"], ",", 
+   FractionBox["21", "13"], ",", 
+   FractionBox["34", "21"], ",", 
+   FractionBox["55", "34"], ",", 
+   FractionBox["89", "55"], ",", 
+   FractionBox["144", "89"]}], "}"}]], "Output",
+ CellChangeTimes->{{3.8356378918555975`*^9, 3.835637903619359*^9}, {
+  3.835637988377037*^9, 3.8356380129072237`*^9}, {3.8356381315288763`*^9, 
+  3.83563813415549*^9}},
+ CellLabel->"Out[78]=",ExpressionUUID->"6616b5d2-fe57-43ab-b90f-d5ef09d0c0ba"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"MetallicLucasError", "[", 
+   RowBox[{"b_", ",", "error_"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"NestWhile", "[", "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{"{", 
+      RowBox[{"iteration", ",", " ", 
+       RowBox[{"nth", " ", "element"}], ",", " ", 
+       RowBox[{"nth", " ", "ratio"}], ",", " ", "error"}], "}"}], "*)"}], 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Flatten", "@", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"1", "+", 
+          RowBox[{"First", "@", "#"}]}], ",", "\[IndentingNewLine]", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Divide", "@@@", "#1"}], ",", 
+              RowBox[{"Abs", "[", 
+               RowBox[{"Subtract", "@@", 
+                RowBox[{"Divide", "@@@", "#1"}]}], "]"}]}], "}"}], "&"}], "@", 
+           RowBox[{"Take", "[", 
+            RowBox[{
+             RowBox[{"MetallicLucas", "[", 
+              RowBox[{"b", ",", 
+               RowBox[{"1", "+", 
+                RowBox[{"First", "@", "#"}]}]}], "]"}], ",", 
+             RowBox[{"-", "2"}]}], "]"}]}], ")"}]}], "}"}]}], "&"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"{", "1", "}"}], ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Last", "[", "#", "]"}], ">", "error"}], "&"}]}], 
+    "\[IndentingNewLine]", "]"}], "//", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"#1", "[", 
+       RowBox[{"[", "1", "]"}], "]"}], ",", 
+      RowBox[{"N", "[", 
+       RowBox[{
+        RowBox[{"#1", "[", 
+         RowBox[{"[", "2", "]"}], "]"}], ",", "32"}], "]"}]}], "}"}], 
+    "&"}]}]}]], "Input",
+ CellChangeTimes->{{3.8356572881995087`*^9, 3.8356573390521173`*^9}, {
+   3.835657448102384*^9, 3.835657452829313*^9}, {3.8356575374544487`*^9, 
+   3.8356575377577686`*^9}, {3.8356575821608553`*^9, 
+   3.8356576106686335`*^9}, {3.835657814199136*^9, 3.835657867505002*^9}, 
+   3.835660834864786*^9, {3.835660883745947*^9, 3.8356609014603195`*^9}},
+ CellLabel->
+  "In[102]:=",ExpressionUUID->"1b1e9752-1fdd-4f73-a0c0-911b1ff42655"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"MetallicLucasError", "[", 
+    RowBox[{"#", ",", 
+     SuperscriptBox["10", 
+      RowBox[{"-", "32"}]]}], "]"}], "&"}], "/@", 
+  RowBox[{"Range", "[", 
+   RowBox[{"0", ",", "9"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.8356609193749824`*^9, 3.8356609347559805`*^9}},
+ CellLabel->
+  "In[104]:=",ExpressionUUID->"e10367bd-ab3d-4760-b686-3de6a58cded9"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"2", ",", "1.`32."}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "78", ",", 
+     "1.6180339887498948482045868343656437077372388301959095108308`32."}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "44", ",", 
+     "2.4142135623730950488016887242097014892110326976342670426017`32."}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "33", ",", 
+     "3.3027756377319946465596106337352440277075078154636062172805`32."}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "28", ",", 
+     "4.2360679774997896964091736687312778665855756935463222563649`32."}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "25", ",", 
+     "5.1925824035672520156253552457701639096089301781765781106673`32."}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "23", ",", 
+     "6.1622776601683793319988935444327180325947522498847176071586`32."}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "21", ",", 
+     "7.1400549446402591355486512457635136086995255705333817508513`32."}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "20", ",", 
+     "8.1231056256176605498214098559740784346418143980962794534112`32."}], 
+    "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+    "19", ",", 
+     "9.1097722286464436550011371408813946457046364839514688345109`32."}], 
+    "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.835660919904859*^9, 3.8356609353759775`*^9}},
+ CellLabel->
+  "Out[104]=",ExpressionUUID->"0c0145af-daff-48e4-b6be-713351299e3e"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{834, 888},
+WindowMargins->{{-3, Automatic}, {Automatic, 1.7999999999999998`}},
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"0f2bab0d-01c6-4772-957a-16fd35f79d87"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 388, 8, 98, "Title",ExpressionUUID->"a3081651-4989-4668-802a-a5b05bd6b6df"],
+Cell[971, 32, 1147, 20, 196, "Text",ExpressionUUID->"960a5250-fdc5-44ef-b4ab-68a94be613aa"],
+Cell[2121, 54, 279, 6, 35, "Text",ExpressionUUID->"1594f8d5-24ba-477f-b57c-fa892dd092fe"],
+Cell[2403, 62, 555, 17, 35, "Text",ExpressionUUID->"5ed80237-3b57-429f-b116-1669070543d3"],
+Cell[2961, 81, 174, 3, 35, "Text",ExpressionUUID->"8091774e-6459-4969-aa3d-e65484e5dea7"],
+Cell[3138, 86, 666, 20, 45, "Text",ExpressionUUID->"02dfa583-bb8f-4fce-8bb6-d6d87049001c"],
+Cell[3807, 108, 351, 10, 35, "Text",ExpressionUUID->"f6a18f3f-d5d1-4a73-9b9e-7a7cc2f81975"],
+Cell[CellGroupData[{
+Cell[4183, 122, 1574, 42, 170, "Input",ExpressionUUID->"e4c43066-c91e-42a6-8d2f-7de3fd8401aa"],
+Cell[5760, 166, 2314, 77, 301, "Output",ExpressionUUID->"c2a96ff4-2026-45c9-9c85-1f1b801fd146"]
+}, {2}]],
+Cell[8086, 246, 337, 8, 104, "Text",ExpressionUUID->"822525a0-5cec-4212-a2e2-62f9b7967a50"],
+Cell[8426, 256, 959, 28, 83, "Text",ExpressionUUID->"ba4dd0f9-4f0c-4d8a-a579-d52477e759c3"],
+Cell[9388, 286, 547, 18, 35, "Text",ExpressionUUID->"2b94e0f1-9b78-49e6-8fa2-01ca28efa9bd"],
+Cell[9938, 306, 923, 27, 83, "Text",ExpressionUUID->"a1daec96-3433-4eaa-bd0c-3d1a41da1fe4"],
+Cell[10864, 335, 449, 13, 40, "Text",ExpressionUUID->"43b2bfa0-b346-41a0-b3d7-f6a9d35a6cab"],
+Cell[CellGroupData[{
+Cell[11338, 352, 150, 3, 67, "Section",ExpressionUUID->"8525fb4d-f7b3-45e4-83ba-7ae4e230b33e"],
+Cell[11491, 357, 199, 3, 35, "Text",ExpressionUUID->"79efbc81-3e6e-4bf3-88cb-7f117bed1969"],
+Cell[11693, 362, 238, 4, 32, "Item",ExpressionUUID->"35367652-69df-4be2-a5ac-b6e3cfc787ed"],
+Cell[11934, 368, 282, 6, 32, "Item",ExpressionUUID->"d4477056-cdd5-42b6-837f-0fc255d0047f"],
+Cell[12219, 376, 250, 6, 32, "Item",ExpressionUUID->"12c1d2bc-2db5-4320-a1a1-8cd007a7fcde"],
+Cell[12472, 384, 216, 5, 32, "Item",ExpressionUUID->"8d368fb4-edf4-4f03-b948-9ab8dd74c97f"],
+Cell[12691, 391, 263, 6, 32, "Item",ExpressionUUID->"b1e36f8f-8c24-4a23-9bb2-41f6196f6a47"],
+Cell[12957, 399, 278, 6, 53, "Item",ExpressionUUID->"63e95b1e-6831-49d8-97ad-3b8be6bdd419"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13272, 410, 162, 3, 67, "Section",ExpressionUUID->"8fcd27b7-dee9-4b52-8410-1f426bf2d6b8"],
+Cell[13437, 415, 1500, 37, 86, "Input",ExpressionUUID->"49af6cbe-1b4b-4de7-9576-ad20d97378fc"],
+Cell[CellGroupData[{
+Cell[14962, 456, 626, 14, 28, "Input",ExpressionUUID->"fe9c0e01-199f-44f4-a4e5-401b8f8621db"],
+Cell[15591, 472, 3783, 84, 534, "Output",ExpressionUUID->"6e78bf24-c345-4211-8b1a-fd19a200440b"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19423, 562, 157, 3, 67, "Section",ExpressionUUID->"287ca7ac-ec50-4784-96d8-7c72b3ad7aee"],
+Cell[CellGroupData[{
+Cell[19605, 569, 339, 7, 81, "Subsection",ExpressionUUID->"5ff80b59-6562-43d0-85c7-806c607d9bc4"],
+Cell[CellGroupData[{
+Cell[19969, 580, 372, 7, 28, "Input",ExpressionUUID->"7e79c0fa-9b92-4e80-985b-272fae9897ec"],
+Cell[20344, 589, 621, 15, 48, "Output",ExpressionUUID->"6616b5d2-fe57-43ab-b90f-d5ef09d0c0ba"]
+}, Open  ]],
+Cell[20980, 607, 2131, 57, 124, "Input",ExpressionUUID->"1b1e9752-1fdd-4f73-a0c0-911b1ff42655"],
+Cell[CellGroupData[{
+Cell[23136, 668, 399, 11, 31, "Input",ExpressionUUID->"e10367bd-ab3d-4760-b686-3de6a58cded9"],
+Cell[23538, 681, 1519, 52, 109, "Output",ExpressionUUID->"0c0145af-daff-48e4-b6be-713351299e3e"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

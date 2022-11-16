@@ -1,0 +1,285 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     10154,        277]
+NotebookOptionsPosition[      8376,        240]
+NotebookOutlinePosition[      8818,        256]
+CellTagsIndexPosition[      8775,        253]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Calkin-Wilf Sequence", "Section",
+ CellChangeTimes->{{3.834442118874315*^9, 
+  3.8344421246953855`*^9}},ExpressionUUID->"ec2441c2-baec-4ec6-9ce4-\
+6be2820fe8f3"],
+
+Cell["\<\
+The Calkin-Wilf sequence contains every nonnegative rational number exactly \
+once.
+It can be calculated recursively as follows:\
+\>", "Text",
+ CellChangeTimes->{{3.834442138790345*^9, 
+  3.834442154835802*^9}},ExpressionUUID->"77b2d9ea-bdcd-4427-9833-\
+07a5e4bf0f34"],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[GridBox[{
+    {GridBox[{
+       {
+        RowBox[{
+         RowBox[{
+          SubscriptBox["a", "1"], "=", "1"}], "\[LineSeparator]", 
+         RowBox[{
+          SubscriptBox["a", 
+           RowBox[{"n", "+", "1"}]], "=", 
+          FractionBox["1", 
+           RowBox[{
+            RowBox[{"2", 
+             RowBox[{"Floor", "[", 
+              SubscriptBox["a", "n"], "]"}]}], "+", "1", "-", 
+            SubscriptBox["a", "n"]}]]}]}]}
+      },
+      GridBoxAlignment->{"Columns" -> {{"="}}}]}
+   },
+   GridBoxItemSize->{"Columns" -> {{
+        Scaled[0.96]}}}], 
+  TraditionalForm]],ExpressionUUID->"6eb3d9a2-e3f4-4850-a5dd-dd79575457ef"]], \
+"Text",
+ CellChangeTimes->{{3.8344422033745623`*^9, 3.8344422227878537`*^9}, {
+  3.8344422774891405`*^9, 
+  3.8344422941708713`*^9}},ExpressionUUID->"f338241a-74e9-41db-97ab-\
+32855118898f"],
+
+Cell[CellGroupData[{
+
+Cell["Task", "Subsubsection",
+ CellChangeTimes->{{3.8344425456945443`*^9, 
+  3.834442546043747*^9}},ExpressionUUID->"a12c4cef-87d3-40d1-95e3-\
+973f1349c906"],
+
+Cell["Show the first 20 terms of the Calkin-Wilf Sequence.", "Item",
+ CellChangeTimes->{{3.8344426250427923`*^9, 3.8344426375536547`*^9}, {
+  3.8344426763777027`*^9, 
+  3.8344426763777027`*^9}},ExpressionUUID->"c0e82d11-39f3-4092-8360-\
+eaff445cafb2"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[{
+ "Find the position of the number ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox["83116", "51639"], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "0d413319-9de8-43f0-a4a1-0bec0feb7f5a"],
+ " in the Calkin-Wilf Sequence"
+}], "Item",
+ CellChangeTimes->{{3.8344426250427923`*^9, 3.8344426375536547`*^9}, {
+  3.834442680696789*^9, 
+  3.8344427078284793`*^9}},ExpressionUUID->"bddf579b-ac00-48fd-9b41-\
+d2f78454fde6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"CalkinWilf", "[", "n_Integer", "]"}], ":=", 
+  RowBox[{"Nest", "[", 
+   RowBox[{
+    RowBox[{
+     FractionBox["1", 
+      RowBox[{
+       RowBox[{"2", 
+        RowBox[{"Floor", "[", "#", "]"}]}], "+", "1", "-", "#"}]], "&"}], ",",
+     "0", ",", "n"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CalkinWilfList", "[", "n_Integer", "]"}], ":=", 
+  RowBox[{"NestList", "[", 
+   RowBox[{
+    RowBox[{
+     FractionBox["1", 
+      RowBox[{
+       RowBox[{"2", 
+        RowBox[{"Floor", "[", "#", "]"}]}], "+", "1", "-", "#"}]], "&"}], ",",
+     "0", ",", "n"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CalkinWilfFind", "[", "n_Rational", "]"}], ":=", 
+  RowBox[{"First", "@", "\[IndentingNewLine]", 
+   RowBox[{"NestWhile", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"First", "[", "#", "]"}], "+", "1"}], ",", 
+        FractionBox["1", 
+         RowBox[{
+          RowBox[{"2", 
+           RowBox[{"Floor", "[", 
+            RowBox[{"Last", "[", "#", "]"}], "]"}]}], "+", "1", "-", 
+          RowBox[{"Last", "[", "#", "]"}]}]]}], "}"}], "&"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}], ",", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Last", "[", "#", "]"}], "!=", "n"}], "&"}]}], 
+    "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"CalkinWilfFind", "[", 
+   RowBox[{"n_", "?", "NumericQ"}], "]"}], ":=", 
+  RowBox[{"CalkinWilfFind", "@", 
+   RowBox[{"Rationalize", "@", "n"}]}]}]}], "Input",
+ CellChangeTimes->{{3.83444129533328*^9, 3.8344412963967524`*^9}, {
+   3.834441951991439*^9, 3.834442039229214*^9}, 3.83444230637527*^9, {
+   3.834444023381116*^9, 3.8344440538470755`*^9}, {3.834444085908521*^9, 
+   3.8344440891346903`*^9}, {3.834444130647162*^9, 3.834444158650708*^9}, {
+   3.8344446070771513`*^9, 3.834444611940748*^9}, {3.8344450171765404`*^9, 
+   3.8344450308822145`*^9}, {3.834445071913641*^9, 3.8344451211142063`*^9}, {
+   3.834445465703412*^9, 3.834445631294341*^9}, {3.8344460414678326`*^9, 
+   3.8344461606522713`*^9}, {3.834446806473008*^9, 
+   3.8344468066641045`*^9}},ExpressionUUID->"29cb6e61-c49e-47be-8617-\
+2d332b29a84a"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"CalkinWilf", "[", "20", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"CalkinWilfList", "[", "20", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"CalkinWilfFind", "[", 
+  FractionBox["3", "8"], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"CalkinWilfFind", "[", "0.375", "]"}]}], "Input",
+ CellChangeTimes->{{3.834445099240899*^9, 3.8344451089151154`*^9}, {
+  3.8344455223838224`*^9, 3.8344455299958982`*^9}, {3.8344456008207364`*^9, 
+  3.834445625652835*^9}},
+ CellLabel->
+  "In[121]:=",ExpressionUUID->"af47b3a0-c2f8-4eea-a588-cafd12488132"],
+
+Cell[BoxData[
+ FractionBox["3", "8"]], "Output",
+ CellChangeTimes->{{3.8344451022726054`*^9, 3.8344451093303113`*^9}, {
+  3.834445530459619*^9, 3.8344455403855257`*^9}, {3.834445606000278*^9, 
+  3.8344456345116644`*^9}, {3.834446086633366*^9, 3.834446109153267*^9}, {
+  3.834446146359369*^9, 3.8344461638879766`*^9}},
+ CellLabel->
+  "Out[121]=",ExpressionUUID->"6ae29084-6455-4859-99cd-be4a383763e8"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0", ",", "1", ",", 
+   FractionBox["1", "2"], ",", "2", ",", 
+   FractionBox["1", "3"], ",", 
+   FractionBox["3", "2"], ",", 
+   FractionBox["2", "3"], ",", "3", ",", 
+   FractionBox["1", "4"], ",", 
+   FractionBox["4", "3"], ",", 
+   FractionBox["3", "5"], ",", 
+   FractionBox["5", "2"], ",", 
+   FractionBox["2", "5"], ",", 
+   FractionBox["5", "3"], ",", 
+   FractionBox["3", "4"], ",", "4", ",", 
+   FractionBox["1", "5"], ",", 
+   FractionBox["5", "4"], ",", 
+   FractionBox["4", "7"], ",", 
+   FractionBox["7", "3"], ",", 
+   FractionBox["3", "8"]}], "}"}]], "Output",
+ CellChangeTimes->{{3.8344451022726054`*^9, 3.8344451093303113`*^9}, {
+  3.834445530459619*^9, 3.8344455403855257`*^9}, {3.834445606000278*^9, 
+  3.8344456345116644`*^9}, {3.834446086633366*^9, 3.834446109153267*^9}, {
+  3.834446146359369*^9, 3.834446163915063*^9}},
+ CellLabel->
+  "Out[122]=",ExpressionUUID->"318a3a0f-d796-42d9-851d-b93b42d4168d"],
+
+Cell[BoxData["20"], "Output",
+ CellChangeTimes->{{3.8344451022726054`*^9, 3.8344451093303113`*^9}, {
+  3.834445530459619*^9, 3.8344455403855257`*^9}, {3.834445606000278*^9, 
+  3.8344456345116644`*^9}, {3.834446086633366*^9, 3.834446109153267*^9}, {
+  3.834446146359369*^9, 3.834446163923456*^9}},
+ CellLabel->
+  "Out[123]=",ExpressionUUID->"6aa25bd9-bf0e-4386-8c72-962cdfdad4d7"],
+
+Cell[BoxData["20"], "Output",
+ CellChangeTimes->{{3.8344451022726054`*^9, 3.8344451093303113`*^9}, {
+  3.834445530459619*^9, 3.8344455403855257`*^9}, {3.834445606000278*^9, 
+  3.8344456345116644`*^9}, {3.834446086633366*^9, 3.834446109153267*^9}, {
+  3.834446146359369*^9, 3.834446163930442*^9}},
+ CellLabel->
+  "Out[124]=",ExpressionUUID->"2792a181-d17b-4a70-b476-aad02987ed71"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"AbsoluteTiming", "[", 
+  RowBox[{"CalkinWilfFind", "[", 
+   FractionBox["83116", "51639"], "]"}], "]"}]], "Input",
+ CellChangeTimes->{{3.834445734789114*^9, 3.834445777628439*^9}},
+ CellLabel->
+  "In[125]:=",ExpressionUUID->"291f15d1-a332-47ae-928e-d7de6b766475"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"403.7130649`", ",", "123456789"}], "}"}]], "Output",
+ CellChangeTimes->{3.8344457697671566`*^9, 3.8344460360225477`*^9, 
+  3.8344465781571093`*^9},
+ CellLabel->
+  "Out[125]=",ExpressionUUID->"053c3908-964b-4e0e-a5c0-cb4427cf915f"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{696.3333333333334, 731.3333333333334},
+WindowMargins->{{-3.3333333333333335`, Automatic}, {Automatic, 1}},
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (May 11, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"ce50dcee-aaa5-430c-bca3-938f27f5cbff"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 167, 3, 67, "Section",ExpressionUUID->"ec2441c2-baec-4ec6-9ce4-6be2820fe8f3"],
+Cell[750, 27, 278, 7, 58, "Text",ExpressionUUID->"77b2d9ea-bdcd-4427-9833-07a5e4bf0f34"],
+Cell[1031, 36, 877, 26, 66, "Text",ExpressionUUID->"f338241a-74e9-41db-97ab-32855118898f"],
+Cell[CellGroupData[{
+Cell[1933, 66, 157, 3, 45, "Subsubsection",ExpressionUUID->"a12c4cef-87d3-40d1-95e3-973f1349c906"],
+Cell[2093, 71, 251, 4, 32, "Item",ExpressionUUID->"c0e82d11-39f3-4092-8360-eaff445cafb2"],
+Cell[CellGroupData[{
+Cell[2369, 79, 446, 12, 35, "Item",ExpressionUUID->"bddf579b-ac00-48fd-9b41-d2f78454fde6"],
+Cell[2818, 93, 2198, 57, 198, "Input",ExpressionUUID->"29cb6e61-c49e-47be-8617-2d332b29a84a"],
+Cell[CellGroupData[{
+Cell[5041, 154, 551, 10, 105, "Input",ExpressionUUID->"af47b3a0-c2f8-4eea-a588-cafd12488132"],
+Cell[5595, 166, 400, 7, 48, "Output",ExpressionUUID->"6ae29084-6455-4859-99cd-be4a383763e8"],
+Cell[5998, 175, 965, 24, 48, "Output",ExpressionUUID->"318a3a0f-d796-42d9-851d-b93b42d4168d"],
+Cell[6966, 201, 379, 6, 32, "Output",ExpressionUUID->"6aa25bd9-bf0e-4386-8c72-962cdfdad4d7"],
+Cell[7348, 209, 379, 6, 32, "Output",ExpressionUUID->"2792a181-d17b-4a70-b476-aad02987ed71"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7764, 220, 287, 6, 45, "Input",ExpressionUUID->"291f15d1-a332-47ae-928e-d7de6b766475"],
+Cell[8054, 228, 270, 6, 32, "Output",ExpressionUUID->"053c3908-964b-4e0e-a5c0-cb4427cf915f"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

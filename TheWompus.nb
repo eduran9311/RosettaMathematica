@@ -1,0 +1,1549 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     73010,       1541]
+NotebookOptionsPosition[     70385,       1491]
+NotebookOutlinePosition[     70835,       1508]
+CellTagsIndexPosition[     70792,       1505]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[ButtonBox["Hunt the Wumpus",
+ BaseStyle->"Hyperlink",
+ ButtonData->{
+   URL["http://rosettacode.org/wiki/Hunt_the_Wumpus"], None},
+ ButtonNote->"http://rosettacode.org/wiki/Hunt_the_Wumpus"]], "Title",
+ CellChangeTimes->{{3.8359177909417043`*^9, 
+  3.8359178142451887`*^9}},ExpressionUUID->"9fa6dae2-7f12-47fe-9ad6-\
+0086f8e2e285"],
+
+Cell["\<\
+Create a simple implementation of the classic textual game Hunt The Wumpus.
+
+The game is set in a cave that consists of a 20 room labyrinth. 
+Each room is connected to 3 other rooms (the cave is modeled after the \
+vertices of a dodecahedron). 
+The objective of the player is to find and kill the horrendous beast Wumpus \
+that lurks in the cave.
+
+The player has 5 arrows. If they run out of arrows before killing the Wumpus, \
+the player loses the game.
+
+In the cave are:\
+\>", "Text",
+ CellChangeTimes->{{3.835917978975954*^9, 3.8359179805545287`*^9}, {
+  3.835918049144822*^9, 3.835918062629006*^9}, {3.8359181444398413`*^9, 
+  3.835918162319684*^9}},ExpressionUUID->"cf854f2f-9d18-4271-bf5e-\
+929571cf8b4c"],
+
+Cell["One Wumpus", "Item",
+ CellChangeTimes->{{3.8359186532847433`*^9, 
+  3.835918656915827*^9}},ExpressionUUID->"47d245a9-4403-46fd-a42d-\
+bb45c153de74"],
+
+Cell["Two giant bats", "Item",
+ CellChangeTimes->{{3.8359186532847433`*^9, 
+  3.8359186651907454`*^9}},ExpressionUUID->"f24e9b06-a5d1-41e4-bebe-\
+641495e67185"],
+
+Cell["Two bottomless pits", "Item",
+ CellChangeTimes->{{3.8359186532847433`*^9, 
+  3.8359186693549137`*^9}},ExpressionUUID->"33a867ba-f20b-40a7-ab38-\
+6be916881842"],
+
+Cell["\<\
+If the player enters a room with the Wumpus, he is eaten by it and the game \
+is lost.
+
+If the player enters a room with a bottomless pit, he falls into it and the \
+game is lost.
+
+If the player enters a room with a giant bat, the bat takes him and \
+transports him into a random empty room.
+
+Each turn the player can either walk into an adjacent room or shoot into an \
+adjacent room.
+
+Whenever the player enters a room, he \[OpenCurlyDoubleQuote]senses\
+\[CloseCurlyDoubleQuote] what happens in adjacent rooms. The messages are:\
+\>", "Text",
+ CellChangeTimes->{
+  3.835918678909689*^9, {3.835918783115023*^9, 3.8359188003329334`*^9}, {
+   3.835919264965826*^9, 
+   3.835919265387932*^9}},ExpressionUUID->"81aae0ae-338b-4a8d-bcad-\
+b364a227b918"],
+
+Cell["Nearby Wumpus: \[OpenCurlyDoubleQuote]You smell something terrible \
+nearby.\[CloseCurlyDoubleQuote]", "Item",
+ CellChangeTimes->{{3.8359189270055757`*^9, 
+  3.835918941683016*^9}},ExpressionUUID->"6faf6408-47e7-4173-b53a-\
+d41979b73b7e"],
+
+Cell["Nearby bat: \[OpenCurlyDoubleQuote]You hear a rustling.\
+\[CloseCurlyDoubleQuote]", "Item",
+ CellChangeTimes->{{3.8359189270055757`*^9, 
+  3.835918955452561*^9}},ExpressionUUID->"4ed2da3f-ea71-4278-b58d-\
+f160a6b4a210"],
+
+Cell["\<\
+Nearby pit: \[OpenCurlyDoubleQuote]You feel a cold wind blowing from a nearby \
+cavern.\[CloseCurlyDoubleQuote]\
+\>", "Item",
+ CellChangeTimes->{{3.8359189270055757`*^9, 3.8359189753798885`*^9}, {
+  3.8359190556934924`*^9, 
+  3.8359190666172633`*^9}},ExpressionUUID->"703aea97-31a9-43bd-a42c-\
+4f7a690ba588"],
+
+Cell["\<\
+When the player shoots, he wins the game if he is shooting in the room with \
+the Wumpus. If he shoots into another room, the Wumpus has a 75% of chance of \
+waking up and moving into an adjacent room: if this is the room with the \
+player, he eats him up and the game is lost.\
+\>", "Text",
+ CellChangeTimes->{
+  3.835919077968324*^9, {3.83591962126309*^9, 
+   3.835919621453639*^9}},ExpressionUUID->"b4c1b345-ec97-420a-af85-\
+2cf78b829c48"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"graph", "=", 
+  RowBox[{"AdjacencyGraph", "[", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", 
+        "1", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "1", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", 
+        "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "1", ",", 
+        "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "1", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "1", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", 
+        "1", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "1", ",", "1", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "1", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "1", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", 
+        "1", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "1", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "1", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "1", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "1"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "1", ",", "0", ",", "1", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "1", ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+       "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "1", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", "0", ",", 
+        "0", ",", "0", ",", "0", ",", "1", ",", "0", ",", "0"}], "}"}]}], 
+     "}"}], ",", " ", 
+    RowBox[{"VertexCoordinates", "\[Rule]", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"1.548`", ",", "0.503`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "1.134`"}], ",", 
+         RowBox[{"-", "0.368`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.`", ",", "1.628`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.957`", ",", 
+         RowBox[{"-", "1.317`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "1.548`"}], ",", "0.503`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.957`"}], ",", 
+         RowBox[{"-", "1.317`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.`", ",", "2.466`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1.449`", ",", 
+         RowBox[{"-", "1.995`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.302`", ",", "0.416`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.489`", ",", 
+         RowBox[{"-", "0.159`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "2.345`"}], ",", "0.762`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "1.45`"}], ",", 
+         RowBox[{"-", "1.995`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.489`"}], ",", 
+         RowBox[{"-", "0.159`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.7`", ",", "0.965`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1.133`", ",", 
+         RowBox[{"-", "0.369`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"2.345`", ",", "0.762`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.302`"}], ",", "0.416`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.`", ",", 
+         RowBox[{"-", "0.514`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.7`"}], ",", "0.965`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.`", ",", 
+         RowBox[{"-", "1.192`"}]}], "}"}]}], "}"}]}], ",", 
+    RowBox[{"VertexLabels", "\[Rule]", "Automatic"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.835987887815587*^9, 3.83598795531894*^9}, {
+  3.835995360653896*^9, 3.8359953820926695`*^9}},
+ CellLabel->"In[13]:=",ExpressionUUID->"0caca9ec-2843-4be2-922c-07677c2aaab2"],
+
+Cell[BoxData[
+ GraphicsBox[
+  NamespaceBox["NetworkGraphics",
+   DynamicModuleBox[{Typeset`graph = HoldComplete[
+     Graph[{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+       20}, {Null, 
+       SparseArray[
+       Automatic, {20, 20}, 0, {
+        1, {{0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 
+          51, 54, 57, 60}, {{14}, {15}, {16}, {5}, {6}, {13}, {7}, {14}, {
+          19}, {8}, {15}, {20}, {2}, {11}, {19}, {2}, {12}, {20}, {3}, {11}, {
+          16}, {4}, {12}, {16}, {10}, {14}, {17}, {9}, {15}, {18}, {5}, {7}, {
+          12}, {6}, {8}, {11}, {2}, {17}, {18}, {1}, {3}, {9}, {1}, {4}, {
+          10}, {1}, {7}, {8}, {9}, {13}, {19}, {10}, {13}, {20}, {3}, {5}, {
+          17}, {4}, {6}, {18}}}, Pattern}]}, {
+      VertexLabels -> {Automatic}, VertexCoordinates -> CompressedData["
+1:eJxTTMoPSmViYGAQAWIQ/SP48dLZR37Y12ftKZks8cB+33wp/bsqn/ZHpVjf
+9++9vp8BCuxN43Z58vyyt9xyomzf/Hf2QMnpeUJf90P174fph8rvh8nD9L+r
+AZnA7HCyDGTDd/s3gTvkWl//398udvPc9+DLUH237DfNfb/8mPd9e3VDjjUy
+UUf2H/6qEdN/iOnAn5UfL/kmvbA3BoPv+2H6oer3w9SngcEz+4dVIuvcH76z
+DwE5T+GTPUsYn+6muddh5jnAzIPavx9mP8y9y4C6NhQ9gJm3H2YeTB7iv8/7
+AVLKoH4=
+        "]}]]}, 
+    TagBox[GraphicsGroupBox[{
+       {Hue[0.6, 0.7, 0.5], Opacity[0.7], Arrowheads[0.], 
+        ArrowBox[CompressedData["
+1:eJxTTMoPSmVmYGCQA2ImKP4R/Hjp7CM/7Ouz9pRMlnhgnwYGz+wfVomsc3/4
+zh5dPgTEVfhkzxLGp7tp7vX96PKHv2rE9B9icviz8uMl36QX9vvmS+nfVfm0
+PyrF+r5/L1z9fph6dHnLLSfK9s1/tx/ImZ4n9HU/uvymue+XH/O+v1/dkGON
+TNSR/QxQYG8at8uT55c9jP+uBiTC7IAuj+4/HPL7YfJQ99jD3HOyDOSi7/Zv
+AnfItb7+vx9dHj180OVh9kH4nzHCAxp+B2Dhhy6Pw33w8DIGg+/70dy3H5f9
+6OGFbj8OeXj8oocHuv3o8uj628VunvsefBnqj1v20Pi1h8Uvujx6/KHLQ/n7
+cZmHHj/o8jD/LgOq2lD0YD96eKD7Dz094rAfI73CzEdXjx6/6OrR4w8AMJHe
+Eg==
+         "], 0.0412452419793366]}, 
+       {Hue[0.6, 0.2, 0.8], EdgeForm[{GrayLevel[0], Opacity[
+        0.7]}], {DiskBox[{1.548, 0.503}, 0.0412452419793366], 
+         InsetBox["1", 
+          Offset[{2, 2}, {1.5892452419793366, 0.5442452419793367}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{-1.134, -0.368}, 0.0412452419793366], 
+         InsetBox["2", 
+          Offset[{2, 2}, {-1.0927547580206634, -0.3267547580206634}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {DiskBox[{0., 1.628}, 0.0412452419793366], 
+         InsetBox["3", 
+          Offset[{2, 2}, {0.0412452419793366, 1.6692452419793364}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{0.957, -1.317}, 0.0412452419793366], 
+         InsetBox["4", 
+          Offset[{2, 2}, {0.9982452419793366, -1.2757547580206634}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{-1.548, 0.503}, 0.0412452419793366], 
+         InsetBox["5", 
+          Offset[{2, 2}, {-1.5067547580206635, 0.5442452419793367}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{-0.957, -1.317}, 0.0412452419793366], 
+         InsetBox["6", 
+          Offset[{2, 2}, {-0.9157547580206633, -1.2757547580206634}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {DiskBox[{0., 2.466}, 0.0412452419793366], 
+         InsetBox["7", 
+          Offset[{2, 2}, {0.0412452419793366, 2.5072452419793367}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{1.449, -1.995}, 0.0412452419793366], 
+         InsetBox["8", 
+          Offset[{2, 2}, {1.4902452419793366, -1.9537547580206636}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{0.302, 0.416}, 0.0412452419793366], 
+         InsetBox["9", 
+          Offset[{2, 2}, {0.3432452419793366, 0.4572452419793366}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{0.489, -0.159}, 0.0412452419793366], 
+         InsetBox["10", 
+          Offset[{2, 2}, {0.5302452419793366, -0.1177547580206634}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{-2.345, 0.762}, 0.0412452419793366], 
+         InsetBox["11", 
+          Offset[{2, 2}, {-2.3037547580206637, 0.8032452419793366}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{-1.45, -1.995}, 0.0412452419793366], 
+         InsetBox["12", 
+          Offset[{2, 2}, {-1.4087547580206634, -1.9537547580206636}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{-0.489, -0.159}, 0.0412452419793366], 
+         InsetBox["13", 
+          Offset[{2, 2}, {-0.4477547580206634, -0.1177547580206634}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {DiskBox[{0.7, 0.965}, 0.0412452419793366],
+          InsetBox["14", 
+          Offset[{2, 2}, {0.7412452419793365, 1.0062452419793366}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{1.133, -0.369}, 0.0412452419793366], 
+         InsetBox["15", 
+          Offset[{2, 2}, {1.1742452419793366, -0.3277547580206634}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{2.345, 0.762}, 0.0412452419793366], 
+         InsetBox["16", 
+          Offset[{2, 2}, {2.3862452419793367, 0.8032452419793366}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{-0.302, 0.416}, 0.0412452419793366], 
+         InsetBox["17", 
+          Offset[{2, 2}, {-0.2607547580206634, 0.4572452419793366}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {DiskBox[{0., -0.514}, 0.0412452419793366],
+          InsetBox["18", 
+          Offset[{2, 2}, {0.0412452419793366, -0.4727547580206634}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {
+         DiskBox[{-0.7, 0.965}, 0.0412452419793366], 
+         InsetBox["19", 
+          Offset[{2, 2}, {-0.6587547580206634, 1.0062452419793366}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}, {DiskBox[{0., -1.192}, 0.0412452419793366],
+          InsetBox["20", 
+          Offset[{2, 2}, {0.0412452419793366, -1.1507547580206634}], 
+          ImageScaled[{0, 0}],
+          BaseStyle->"Graphics"]}}}],
+     MouseAppearanceTag["NetworkGraphics"]],
+    AllowKernelInitialization->False]],
+  DefaultBaseStyle->{
+   "NetworkGraphics", FrontEnd`GraphicsHighlightColor -> Hue[0.8, 1., 0.6]},
+  FormatType->TraditionalForm,
+  FrameTicks->None]], "Output",
+ CellChangeTimes->{{3.835987918753056*^9, 3.8359879559425697`*^9}, {
+   3.8359953668572283`*^9, 3.83599538262556*^9}, 3.8360233547256317`*^9, 
+   3.8360780182724066`*^9, 3.8360872871894217`*^9, 3.836087392033415*^9, 
+   3.836349127845544*^9, 3.8363507890968733`*^9, 3.836359534501778*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"d69fb5cd-0246-4e30-91bd-42b61438d2da"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"(*", "\[IndentingNewLine]", 
+   RowBox[{"DynamicModule", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"v", "=", 
+        RowBox[{"RandomInteger", "[", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "20"}], "}"}], "]"}]}], ",", 
+       RowBox[{"playeralive", "=", "True"}], ",", 
+       RowBox[{"wumpusalive", "=", "True"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"newgraph", "=", "graph"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"arrows", "=", "5"}], ",", "bool", ",", 
+       RowBox[{"shooting", "=", "True"}], ",", "\[IndentingNewLine]", "loc", 
+       ",", "wumpus", ",", "bat1", ",", "bat2", ",", "pit1", ",", "pit2", ",",
+        "\[IndentingNewLine]", "buttons", ",", 
+       RowBox[{"pressed", "=", "False"}], ",", "\[IndentingNewLine]", 
+       "adjVec", ",", "messageAssociation", ",", "messageDone", ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"message", "=", "\"\<\>\""}], ",", 
+       RowBox[{"message2", "=", "\"\<\>\""}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "wumpus", ",", "bat1", ",", "bat2", ",", "pit1", ",", "pit2"}], "}"}],
+        "=", 
+       RowBox[{"RandomSample", "[", 
+        RowBox[{
+         RowBox[{"Range", "[", "20", "]"}], ",", "5"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "This", " ", "boolean", " ", "is", " ", "used", " ", "to", " ", "to", 
+        " ", "figure", " ", "out", " ", "when", " ", "the", " ", "game", " ", 
+        "ends"}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"bool", ":=", 
+       RowBox[{"wumpusalive", "||", 
+        RowBox[{"arrows", ">", "0"}], "||", 
+        RowBox[{"!", "playeralive"}]}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "These", " ", "dynamic", " ", "panes", " ", "provide", " ", "the", " ",
+         "main", " ", "messages", " ", "after", " ", "events"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"Column", "@", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Panel", "[", 
+           RowBox[{"Dynamic", "[", "message", "]"}], "]"}], ",", 
+          RowBox[{"Panel", "[", 
+           RowBox[{"Dynamic", "[", "message2", "]"}], "]"}], ",", 
+          RowBox[{"Panel", "[", 
+           RowBox[{"\"\<Arrows: \>\"", 
+            RowBox[{"Dynamic", "[", "arrows", "]"}]}], "]"}]}], "}"}]}], 
+       "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"Dynamic", "[", "newgraph", "]"}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "The", " ", "messageAssociation", " ", "just", " ", "translates", " ", 
+        "the", " ", "numbers", " ", "given", " ", "into", " ", "a", " ", 
+        "message", " ", "in", " ", "the", " ", "panels"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"messageAssociation", "=", 
+       RowBox[{"<|", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+         "wumpus", "->", "\"\<You smell something terrible nearby.\>\""}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"bat1", "->", "\"\<You hear a rustling.\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"bat2", "->", "\"\<You hear a rustling.\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+         "pit1", "->", 
+          "\"\<You feel a cold wind blowing from a nearby cavern.\>\""}], ",",
+          "\[IndentingNewLine]", 
+         RowBox[{
+         "pit2", "->", 
+          "\"\<You feel a cold wind blowing from a nearby cavern.\>\""}]}], 
+        "|>"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"While", "[", 
+       RowBox[{"bool", ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"adjVec", "=", 
+          RowBox[{"AdjacencyList", "[", 
+           RowBox[{"graph", ",", "v"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"messageDone", "=", 
+          RowBox[{"Select", "[", 
+           RowBox[{
+            RowBox[{"adjVec", "/.", "messageAssociation"}], ",", 
+            RowBox[{
+             RowBox[{"!", 
+              RowBox[{"NumericQ", "[", "#", "]"}]}], "&"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"VectorQ", "[", 
+            RowBox[{"messageDone", ",", "NumericQ"}], "]"}], ",", 
+           RowBox[{"message", "=", "\"\<This room feels neutral\>\""}], ",", 
+           "\[IndentingNewLine]", 
+           RowBox[{"message", "=", 
+            RowBox[{"Column", "@", "messageDone"}]}]}], "]"}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{"Creates", " ", "the", " ", "graph"}], "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{"newgraph", "=", 
+          RowBox[{"HighlightGraph", "[", 
+           RowBox[{"graph", ",", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"Style", "[", 
+               RowBox[{"adjVec", ",", "Green"}], "]"}], ",", 
+              RowBox[{"Style", "[", 
+               RowBox[{"v", ",", "Red"}], "]"}]}], "}"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"(*", 
+          RowBox[{
+          "Modifies", " ", "the", " ", "dialog", " ", "and", " ", "processes",
+            " ", "different", " ", "occurences"}], "*)"}], 
+         "\[IndentingNewLine]", 
+         RowBox[{
+         "message2", "=", 
+          "\"\<Where would you like to shoot your arrow?\>\""}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"buttons", "=", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Button", "[", 
+             RowBox[{"#", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+              RowBox[{"If", "[", 
+               RowBox[{"shooting", ",", "\[IndentingNewLine]", 
+                RowBox[{"(*", " ", 
+                 RowBox[{
+                  RowBox[{
+                  "NEED", " ", "TO", " ", "DO", " ", "\[IndentingNewLine]", 
+                   "x", " ", "Message", " ", "dialog", " ", "for", " ", 
+                   "shooting", " ", "in", " ", "the", " ", "room", 
+                   "\[IndentingNewLine]", "X", " ", "check", " ", "if", " ", 
+                   "the", " ", "WUMPUS", " ", "is", " ", "in", " ", "that", 
+                   " ", "room", " ", 
+                   RowBox[{"(", 
+                    RowBox[{"if", " ", "so", " ", "the", " ", "WIN"}], ")"}], 
+                   "\[IndentingNewLine]", "X", " ", "If", " ", "the", " ", 
+                   "room", " ", "has", " ", "a", " ", "bat", " ", "then", " ",
+                    "the", " ", "bat", " ", "is", " ", "dead", 
+                   "\[IndentingNewLine]", "X", " ", "If", " ", "the", " ", 
+                   "WUMPUS", " ", "is", " ", "nearby"}], ",", " ", 
+                  RowBox[{
+                  "it", " ", "has", " ", "a", " ", "75", "%", " ", "chance", 
+                   " ", "to", " ", "go", " ", "to", " ", "one", " ", "of", 
+                   " ", "the", " ", "rooms", " ", "adjacent", " ", "to", " ", 
+                   "it"}]}], "\[IndentingNewLine]", "*)"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"message", "=", 
+                  RowBox[{"\"\<You shot into room \>\"", " ", "<>", " ", 
+                   RowBox[{"ToString", "[", "#", "]"}]}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"(*", 
+                  RowBox[{"WUMPUS", " ", "check"}], "*)"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"#", "==", "wumpus"}], ",", 
+                   RowBox[{
+                    RowBox[{"wumpusalive", "=", "False"}], ";", 
+                    RowBox[{"message", "=", "\"\<You killed the WUMPUS\>\""}],
+                     ";"}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{"adjVec", ",", "wumpus"}], "]"}], "&&", 
+                    RowBox[{"RandomChoice", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"0.75", ",", "0.25"}], "}"}], "->", 
+                    RowBox[{"{", 
+                    RowBox[{"True", ",", "False"}], "}"}]}], "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"wumpus", "=", 
+                    RowBox[{"RandomChoice", "[", 
+                    RowBox[{"AdjacencyList", "[", 
+                    RowBox[{"graph", ",", "wumpus"}], "]"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"wumpus", "==", "v"}], ",", 
+                    RowBox[{
+                    "message", "=", "\"\<You have been EATEN.\>\""}]}], 
+                    "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"(*", 
+                  RowBox[{"BAT", " ", "check"}], "*)"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"#", "==", "bat1"}], ",", 
+                   RowBox[{
+                    RowBox[{"bat1", "=", "0"}], ";", 
+                    RowBox[{"message", "=", "\"\<You killed a BAT\>\""}], 
+                    ";"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"#", "==", "bat2"}], ",", 
+                   RowBox[{
+                    RowBox[{"bat2", "=", "0"}], ";", 
+                    RowBox[{"message", "=", "\"\<You killed a BAT\>\""}], 
+                    ";"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                 "message2", "=", "\"\<Where would you like to move?\>\""}], 
+                 ";", 
+                 RowBox[{"arrows", "--"}], ";"}], ",", "\[IndentingNewLine]", 
+                "\[IndentingNewLine]", 
+                RowBox[{"(*", "Movement", "*)"}], "\[IndentingNewLine]", 
+                RowBox[{"(*", 
+                 RowBox[{
+                  RowBox[{
+                  "NEED", " ", "TO", " ", "DO", " ", "\[IndentingNewLine]", 
+                   "X", " ", "Player", " ", 
+                   RowBox[{
+                   "movement", "\[IndentingNewLine]", "\[CenterDot]", "If"}], 
+                   " ", "WUMPUS"}], " ", "->", " ", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{
+                    "DEAD", "\[IndentingNewLine]", "\[CenterDot]", "If"}], 
+                    " ", "HOLE"}], " ", "->", " ", 
+                   RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    "DEAD", "\[IndentingNewLine]", "\[CenterDot]", "If"}], 
+                    " ", "BAT"}], " ", "->", " ", 
+                    RowBox[{"Randomly", " ", "moved"}]}]}]}], " ", 
+                 "\[IndentingNewLine]", "*)"}], "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"v", "=", "#"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"MemberQ", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"bat1", ",", "bat2"}], "}"}], ",", "v"}], "]"}], 
+                   ",", 
+                   RowBox[{
+                    RowBox[{"v", "=", 
+                    RowBox[{"RandomInteger", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", "20"}], "}"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"message", "=", 
+                    RowBox[{"\"\<You have been flown to \>\"", "<>", 
+                    RowBox[{"ToString", "[", "v", "]"}], "<>", 
+                    "\"\<.\>\""}]}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"wumpus", "==", "v"}], ",", 
+                   RowBox[{
+                    RowBox[{"message", "=", "\"\<You have been EATEN.\>\""}], 
+                    ";", 
+                    RowBox[{"playeralive", "=", "False"}]}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"MemberQ", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"pit1", ",", "pit2"}], "}"}], ",", "v"}], "]"}], 
+                   ",", 
+                   RowBox[{
+                    RowBox[{"message", "=", "\"\<You have FALLEN.\>\""}], ";", 
+                    RowBox[{"playeralive", "=", "False"}]}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"shooting", "=", 
+                  RowBox[{"!", "shooting"}]}], ";"}]}], "\[IndentingNewLine]",
+                "]"}]}], "]"}], "&"}], "/@", "adjVec"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"If", "[", 
+           RowBox[{"shooting", ",", "\[IndentingNewLine]", 
+            RowBox[{
+             RowBox[{"shooting", "=", 
+              RowBox[{"!", "shooting"}]}], ";", "\[IndentingNewLine]", 
+             RowBox[{"Row", "@", 
+              RowBox[{"Append", "[", 
+               RowBox[{"buttons", ",", "\[IndentingNewLine]", 
+                RowBox[{"Button", "[", 
+                 RowBox[{"\"\<Don't shoot\>\"", ",", 
+                  RowBox[{
+                   RowBox[{
+                   "message2", "=", "\"\<Where would you like to move?\>\""}],
+                    ";", 
+                   RowBox[{"message", "=", "\"\<You didn't shoot\>\""}]}]}], 
+                 "]"}]}], "]"}]}]}], ",", "\[IndentingNewLine]", 
+            RowBox[{"Row", "@", "buttons"}]}], "\[IndentingNewLine]", "]"}], "//",
+           "Print"}], ";"}]}], "\[IndentingNewLine]", "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.835988136624711*^9, 3.8359881390064464`*^9}, {
+   3.835988192035866*^9, 3.8359882709115305`*^9}, {3.835988307348198*^9, 
+   3.8359883260073624`*^9}, {3.8359889519538546`*^9, 3.83598895323289*^9}, {
+   3.8359893613319287`*^9, 3.8359894366481543`*^9}, {3.835990152501978*^9, 
+   3.8359902671946898`*^9}, {3.8359903196328697`*^9, 
+   3.8359905000527925`*^9}, {3.8359907035095367`*^9, 
+   3.8359907346618257`*^9}, {3.8359908193432803`*^9, 3.83599082951378*^9}, {
+   3.8359908627357626`*^9, 3.835990877467558*^9}, {3.835990943864931*^9, 
+   3.835991078917472*^9}, 3.8359911780150976`*^9, {3.835991209076583*^9, 
+   3.835991311166791*^9}, {3.8359913909161525`*^9, 3.835991397771186*^9}, {
+   3.835991462670597*^9, 3.835991509180644*^9}, {3.8359915416349525`*^9, 
+   3.835991544804284*^9}, {3.8359929413728075`*^9, 3.835992951922474*^9}, {
+   3.8359929980252657`*^9, 3.8359932891902227`*^9}, {3.8359934240723534`*^9, 
+   3.8359934256440516`*^9}, {3.8359936948408194`*^9, 3.835993739067231*^9}, {
+   3.835993774025107*^9, 3.835993892103307*^9}, {3.8359945018850927`*^9, 
+   3.8359946145810366`*^9}, {3.8359946535123024`*^9, 3.835994654313102*^9}, {
+   3.8359947503009377`*^9, 3.835994768499219*^9}, {3.835994950154269*^9, 
+   3.83599503213373*^9}, {3.835995103044863*^9, 3.835995169381132*^9}, {
+   3.8359952273177614`*^9, 3.835995267662298*^9}, 3.8359954122695417`*^9, {
+   3.835995483355981*^9, 3.835995488419792*^9}, {3.835995533620411*^9, 
+   3.835995667125858*^9}, {3.835995732674223*^9, 3.835995753007018*^9}, {
+   3.8359957867841463`*^9, 3.8359958263325357`*^9}, {3.835995868886552*^9, 
+   3.8359959068911667`*^9}, {3.8359959471501565`*^9, 3.8359960101106415`*^9}, 
+   3.8359961203691607`*^9, {3.835996435754586*^9, 3.8359965174576035`*^9}, {
+   3.83599657545475*^9, 3.8359965834758854`*^9}, {3.836023363948739*^9, 
+   3.8360233640893354`*^9}, {3.8360234835567102`*^9, 3.836023509291746*^9}, {
+   3.836023541774081*^9, 3.8360236559738045`*^9}, 3.836023837753461*^9, {
+   3.836023934876175*^9, 3.836023939728509*^9}, {3.8360239817395525`*^9, 
+   3.836023982082347*^9}, {3.8360242291472*^9, 3.8360242317969837`*^9}, {
+   3.8360243420319185`*^9, 3.8360243703569155`*^9}, {3.836024434458887*^9, 
+   3.836024451217025*^9}, {3.836024497256526*^9, 3.836024513990981*^9}, 
+   3.8360248292135506`*^9, {3.8360749799662046`*^9, 3.8360749812318687`*^9}, {
+   3.836075038100486*^9, 3.8360751135617237`*^9}, {3.8360751616473064`*^9, 
+   3.8360753639157615`*^9}, {3.8360754014452376`*^9, 3.836075409947883*^9}, {
+   3.8360754460426846`*^9, 3.836075484476549*^9}, {3.836075518483143*^9, 
+   3.8360756421058965`*^9}, {3.8360757600223846`*^9, 3.836075917895976*^9}, {
+   3.836075995078123*^9, 3.8360760573560038`*^9}, {3.836076088607315*^9, 
+   3.8360761593187*^9}, {3.836076271256356*^9, 3.8360763147878294`*^9}, {
+   3.836076367282177*^9, 3.8360763710753107`*^9}, {3.836076403555991*^9, 
+   3.836076469813456*^9}, {3.836076507664327*^9, 3.836076548343483*^9}, {
+   3.8360765962460814`*^9, 3.8360767401069365`*^9}, {3.8360767938189845`*^9, 
+   3.836076819815194*^9}, {3.836076854483444*^9, 3.836076869066111*^9}, {
+   3.8360769000696735`*^9, 3.8360769198766656`*^9}, {3.8360769870532904`*^9, 
+   3.8360770017307296`*^9}, {3.8360770673807077`*^9, 3.8360770685660915`*^9}, 
+   3.8360771274983563`*^9, {3.8360772747783403`*^9, 3.836077489000168*^9}, {
+   3.836077533601468*^9, 3.8360778123892756`*^9}, {3.836078181560734*^9, 
+   3.836078217221606*^9}, 3.8360782534234695`*^9, {3.836087129964178*^9, 
+   3.8360871362599573`*^9}, {3.8360871733562613`*^9, 3.836087223929008*^9}, {
+   3.836087317335396*^9, 3.8360873745108643`*^9}, {3.8360874105229673`*^9, 
+   3.8360874422133636`*^9}, {3.8360874804553485`*^9, 3.836087482575348*^9}, {
+   3.8363491074708233`*^9, 3.836349109580216*^9}, {3.8363493305151834`*^9, 
+   3.8363494243277903`*^9}, {3.83634953634649*^9, 3.836349626343155*^9}, {
+   3.8363496594828625`*^9, 3.8363496617879972`*^9}, 3.836349838189126*^9, {
+   3.836349920823541*^9, 3.8363499785796633`*^9}, {3.836350034400036*^9, 
+   3.8363500353637147`*^9}, {3.836350311767719*^9, 3.836350315761198*^9}, {
+   3.8363503687335157`*^9, 3.8363503703686175`*^9}, {3.8363510466988964`*^9, 
+   3.836351046882345*^9}},
+ EmphasizeSyntaxErrors->True,
+ CellLabel->"In[14]:=",ExpressionUUID->"af4c0e03-6419-4c84-83e0-3cd3db57b122"],
+
+Cell[CellGroupData[{
+
+Cell["Modified", "Section",
+ CellChangeTimes->{{3.836351036666196*^9, 
+  3.8363510422330065`*^9}},ExpressionUUID->"6b2a6c8e-5adb-4387-8b22-\
+8705410d5353"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"DynamicModule", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"v", "=", 
+        RowBox[{"RandomInteger", "[", 
+         RowBox[{"{", 
+          RowBox[{"1", ",", "20"}], "}"}], "]"}]}], ",", 
+       RowBox[{"playeralive", "=", "True"}], ",", 
+       RowBox[{"wumpusalive", "=", "True"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"newgraph", "=", "graph"}], ",", 
+       RowBox[{"nextTurn", "=", "True"}], ",", 
+       RowBox[{"color", "=", "Red"}], ",", "\[IndentingNewLine]", 
+       RowBox[{"arrows", "=", "5"}], ",", "bool", ",", 
+       RowBox[{"shooting", "=", "True"}], ",", "\[IndentingNewLine]", "loc", 
+       ",", "wumpus", ",", "bat1", ",", "bat2", ",", "pit1", ",", "pit2", ",",
+        "\[IndentingNewLine]", 
+       RowBox[{"shootingButtons", "=", "\"\<\>\""}], ",", 
+       RowBox[{"movingButtons", "=", "\"\<\>\""}], ",", "\[IndentingNewLine]", 
+       RowBox[{"buttons", "=", "\"\<\>\""}], ",", 
+       RowBox[{"pressed", "=", "False"}], ",", "layout", ",", 
+       "\[IndentingNewLine]", "adjVec", ",", "messageAssociation", ",", 
+       "messageDone", ",", "\[IndentingNewLine]", 
+       RowBox[{"message", "=", "\"\<Let's begin\>\""}], ",", 
+       RowBox[{"message2", "=", "\"\<\>\""}]}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "wumpus", ",", "bat1", ",", "bat2", ",", "pit1", ",", "pit2"}], "}"}],
+        "=", 
+       RowBox[{"RandomSample", "[", 
+        RowBox[{
+         RowBox[{"Range", "[", "20", "]"}], ",", "5"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "This", " ", "boolean", " ", "is", " ", "used", " ", "to", " ", "to", 
+        " ", "figure", " ", "out", " ", "when", " ", "the", " ", "game", " ", 
+        "ends"}], "*)"}], "\[IndentingNewLine]", 
+      RowBox[{"bool", ":=", 
+       RowBox[{"wumpusalive", "&&", 
+        RowBox[{"arrows", ">", "0"}], "&&", "playeralive"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", "bool", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+       "The", " ", "messageAssociation", " ", "just", " ", "translates", " ", 
+        "the", " ", "numbers", " ", "given", " ", "into", " ", "a", " ", 
+        "message", " ", "in", " ", "the", " ", "panels"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"messageAssociation", "=", 
+       RowBox[{"<|", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+         "wumpus", "->", "\"\<You smell something terrible nearby.\>\""}], 
+         ",", "\[IndentingNewLine]", 
+         RowBox[{"bat1", "->", "\"\<You hear a rustling.\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"bat2", "->", "\"\<You hear a rustling.\>\""}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+         "pit1", "->", 
+          "\"\<You feel a cold wind blowing from a nearby cavern.\>\""}], ",",
+          "\[IndentingNewLine]", 
+         RowBox[{
+         "pit2", "->", 
+          "\"\<You feel a cold wind blowing from a nearby cavern.\>\""}]}], 
+        "|>"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{"Creates", " ", "a", " ", "layout"}], " ", "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"layout", "=", 
+       RowBox[{"Column", "[", "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Dynamic", "@", "color"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"Dynamic", "@", "message"}], ",", 
+          RowBox[{"Dynamic", "@", "message2"}], ",", "\[IndentingNewLine]", 
+          RowBox[{"\"\<Arrows: \>\"", " ", "<>", 
+           RowBox[{"ToString", "[", " ", 
+            RowBox[{"Dynamic", "[", "arrows", "]"}], "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"Dynamic", "@", 
+           RowBox[{"Row", "@", "buttons"}]}], ",", 
+          RowBox[{"Dynamic", "@", "newgraph"}]}], "}"}], 
+        "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", "layout", "]"}], ";", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{"While", "[", 
+       RowBox[{"bool", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{"If", "[", 
+         RowBox[{"nextTurn", ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"nextTurn", "=", "False"}], ";", "\[IndentingNewLine]", 
+           "\[IndentingNewLine]", 
+           RowBox[{"adjVec", "=", 
+            RowBox[{"AdjacencyList", "[", 
+             RowBox[{"graph", ",", "v"}], "]"}]}], ";", "\[IndentingNewLine]", 
+           RowBox[{"messageDone", "=", 
+            RowBox[{"Select", "[", 
+             RowBox[{
+              RowBox[{"adjVec", "/.", "messageAssociation"}], ",", 
+              RowBox[{
+               RowBox[{"!", 
+                RowBox[{"NumericQ", "[", "#", "]"}]}], "&"}]}], "]"}]}], ";", 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"VectorQ", "[", 
+              RowBox[{"messageDone", ",", "NumericQ"}], "]"}], ",", 
+             RowBox[{"message", "=", "\"\<This room feels neutral\>\""}], ",",
+              "\[IndentingNewLine]", 
+             RowBox[{"message", "=", 
+              RowBox[{"Column", "@", "messageDone"}]}]}], "]"}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{"Creates", " ", "the", " ", "graph"}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{"newgraph", "=", 
+            RowBox[{"HighlightGraph", "[", 
+             RowBox[{"graph", ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"Style", "[", 
+                 RowBox[{"adjVec", ",", "Green"}], "]"}], ",", 
+                RowBox[{"Style", "[", 
+                 RowBox[{"v", ",", "Red"}], "]"}]}], "}"}]}], "]"}]}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"(*", 
+            RowBox[{
+            "Modifies", " ", "the", " ", "dialog", " ", "and", " ", 
+             "processes", " ", "different", " ", "occurences"}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{
+           "message2", "=", 
+            "\"\<Where would you like to shoot your arrow?\>\""}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"shootingButtons", "=", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Button", "[", 
+               RowBox[{"#", ",", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+                RowBox[{"(*", " ", 
+                 RowBox[{
+                  RowBox[{
+                  "NEED", " ", "TO", " ", "DO", " ", "\[IndentingNewLine]", 
+                   "x", " ", "Message", " ", "dialog", " ", "for", " ", 
+                   "shooting", " ", "in", " ", "the", " ", "room", 
+                   "\[IndentingNewLine]", "X", " ", "check", " ", "if", " ", 
+                   "the", " ", "WUMPUS", " ", "is", " ", "in", " ", "that", 
+                   " ", "room", " ", 
+                   RowBox[{"(", 
+                    RowBox[{"if", " ", "so", " ", "the", " ", "WIN"}], ")"}], 
+                   "\[IndentingNewLine]", "X", " ", "If", " ", "the", " ", 
+                   "room", " ", "has", " ", "a", " ", "bat", " ", "then", " ",
+                    "the", " ", "bat", " ", "is", " ", "dead", 
+                   "\[IndentingNewLine]", "X", " ", "If", " ", "the", " ", 
+                   "WUMPUS", " ", "is", " ", "nearby"}], ",", " ", 
+                  RowBox[{
+                  "it", " ", "has", " ", "a", " ", "75", "%", " ", "chance", 
+                   " ", "to", " ", "go", " ", "to", " ", "one", " ", "of", 
+                   " ", "the", " ", "rooms", " ", "adjacent", " ", "to", " ", 
+                   "it"}]}], "\[IndentingNewLine]", "*)"}], 
+                "\[IndentingNewLine]", 
+                RowBox[{
+                 RowBox[{"message", "=", 
+                  RowBox[{"\"\<You shot into room \>\"", " ", "<>", " ", 
+                   RowBox[{"ToString", "[", "#", "]"}]}]}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"(*", 
+                  RowBox[{"WUMPUS", " ", "check"}], "*)"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"#", "==", "wumpus"}], ",", 
+                   RowBox[{
+                    RowBox[{"wumpusalive", "=", "False"}], ";", 
+                    RowBox[{"message", "=", "\"\<You killed the WUMPUS\>\""}],
+                     ";"}], ",", "\[IndentingNewLine]", 
+                   RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"MemberQ", "[", 
+                    RowBox[{"adjVec", ",", "wumpus"}], "]"}], "&&", 
+                    RowBox[{"RandomChoice", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"0.75", ",", "0.25"}], "}"}], "->", 
+                    RowBox[{"{", 
+                    RowBox[{"True", ",", "False"}], "}"}]}], "]"}]}], ",", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{
+                    RowBox[{"wumpus", "=", 
+                    RowBox[{"RandomChoice", "[", 
+                    RowBox[{"AdjacencyList", "[", 
+                    RowBox[{"graph", ",", "wumpus"}], "]"}], "]"}]}], ";", 
+                    "\[IndentingNewLine]", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"wumpus", "==", "v"}], ",", 
+                    RowBox[{
+                    "message", "=", "\"\<You have been EATEN.\>\""}]}], 
+                    "]"}]}]}], "\[IndentingNewLine]", "]"}]}], "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"(*", 
+                  RowBox[{"BAT", " ", "check"}], "*)"}], 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"#", "==", "bat1"}], ",", 
+                   RowBox[{
+                    RowBox[{"bat1", "=", "0"}], ";", 
+                    RowBox[{"message", "=", "\"\<You killed a BAT\>\""}], 
+                    ";"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"If", "[", 
+                  RowBox[{
+                   RowBox[{"#", "==", "bat2"}], ",", 
+                   RowBox[{
+                    RowBox[{"bat2", "=", "0"}], ";", 
+                    RowBox[{"message", "=", "\"\<You killed a BAT\>\""}], 
+                    ";"}]}], "]"}], ";", "\[IndentingNewLine]", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"shooting", "=", "False"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{"color", "=", "Green"}], ";", "\[IndentingNewLine]", 
+                 RowBox[{"Print", "[", "shooting", "]"}], ";", 
+                 "\[IndentingNewLine]", 
+                 RowBox[{
+                 "message2", "=", "\"\<Where would you like to move?\>\""}], 
+                 ";", 
+                 RowBox[{"arrows", "--"}], ";"}]}], "\[IndentingNewLine]", 
+               "]"}], "&"}], "/@", "adjVec"}]}], ";", "\[IndentingNewLine]", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"movingButtons", "=", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Button", "[", "\[IndentingNewLine]", 
+               RowBox[{"(*", "Movement", "*)"}], "\[IndentingNewLine]", 
+               RowBox[{"(*", 
+                RowBox[{
+                 RowBox[{
+                 "NEED", " ", "TO", " ", "DO", " ", "\[IndentingNewLine]", 
+                  "X", " ", "Player", " ", 
+                  RowBox[{
+                  "movement", "\[IndentingNewLine]", "\[CenterDot]", "If"}], 
+                  " ", "WUMPUS"}], " ", "->", " ", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{
+                   "DEAD", "\[IndentingNewLine]", "\[CenterDot]", "If"}], " ",
+                    "HOLE"}], " ", "->", " ", 
+                  RowBox[{
+                   RowBox[{
+                    RowBox[{
+                    "DEAD", "\[IndentingNewLine]", "\[CenterDot]", "If"}], 
+                    " ", "BAT"}], " ", "->", " ", 
+                   RowBox[{"Randomly", " ", "moved"}]}]}]}], " ", 
+                "\[IndentingNewLine]", "*)"}], "\[IndentingNewLine]", 
+               RowBox[{
+                RowBox[{"v", "=", "#"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"MemberQ", "[", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"bat1", ",", "bat2"}], "}"}], ",", "v"}], "]"}], 
+                  ",", 
+                  RowBox[{
+                   RowBox[{"v", "=", 
+                    RowBox[{"RandomInteger", "[", 
+                    RowBox[{"{", 
+                    RowBox[{"1", ",", "20"}], "}"}], "]"}]}], ";", 
+                   "\[IndentingNewLine]", 
+                   RowBox[{"message", "=", 
+                    RowBox[{"\"\<You have been flown to \>\"", "<>", 
+                    RowBox[{"ToString", "[", "v", "]"}], "<>", 
+                    "\"\<.\>\""}]}]}]}], "]"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"wumpus", "==", "v"}], ",", 
+                  RowBox[{
+                   RowBox[{"message", "=", "\"\<You have been EATEN.\>\""}], 
+                   ";", 
+                   RowBox[{"playeralive", "=", "False"}]}]}], "]"}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"If", "[", 
+                 RowBox[{
+                  RowBox[{"MemberQ", "[", 
+                   RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{"pit1", ",", "pit2"}], "}"}], ",", "v"}], "]"}], 
+                  ",", 
+                  RowBox[{
+                   RowBox[{"message", "=", "\"\<You have FALLEN.\>\""}], ";", 
+                   RowBox[{"playeralive", "=", "False"}]}]}], "]"}], ";", 
+                "\[IndentingNewLine]", 
+                RowBox[{"shooting", "=", "True"}], ";", "\[IndentingNewLine]", 
+                RowBox[{"nextTurn", "=", "True"}], ";"}], 
+               "\[IndentingNewLine]", "]"}], "&"}], "/@", "adjVec"}]}], ";", 
+           "\[IndentingNewLine]", "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{"shooting", ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"buttons", "=", 
+               RowBox[{"Append", "[", 
+                RowBox[{"shootingButtons", ",", "\[IndentingNewLine]", 
+                 RowBox[{"Button", "[", 
+                  RowBox[{"\"\<Don't shoot\>\"", ",", 
+                   RowBox[{
+                    RowBox[{"shooting", "=", "False"}], ";", 
+                    RowBox[{
+                    "message2", "=", 
+                    "\"\<Where would you like to move?\>\""}], ";", 
+                    RowBox[{"message", "=", "\"\<You didn't shoot\>\""}]}]}], 
+                  "]"}]}], "]"}]}], ";"}], ",", "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"buttons", "=", "movingButtons"}], ";"}]}], 
+            "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", 
+         "]"}]}], "\[IndentingNewLine]", "\[IndentingNewLine]", "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.8363508470520134`*^9, 3.836350859027804*^9}, {
+   3.8363511664644456`*^9, 3.8363513990250854`*^9}, {3.8363521533871183`*^9, 
+   3.8363522475301075`*^9}, 3.8363523905420175`*^9, {3.8363524332262115`*^9, 
+   3.8363524582898273`*^9}, {3.8363552448104577`*^9, 
+   3.8363552717928114`*^9}, {3.8363553030961823`*^9, 
+   3.8363553284858074`*^9}, {3.836355467196555*^9, 3.836355478783592*^9}, {
+   3.8363556373934*^9, 3.8363556920995255`*^9}, {3.836357430973923*^9, 
+   3.8363574378766136`*^9}, {3.8363574922121654`*^9, 3.836357663186404*^9}, {
+   3.836357720150798*^9, 3.836357735438054*^9}, {3.8363577722740774`*^9, 
+   3.836357773919685*^9}, {3.836357833671476*^9, 3.8363578395151033`*^9}, {
+   3.8363578731651783`*^9, 3.836357879952097*^9}, {3.8363583423631053`*^9, 
+   3.836358345271387*^9}, {3.83635867560896*^9, 3.836358691118112*^9}, {
+   3.836358741227233*^9, 3.8363587743964252`*^9}, {3.836358813489602*^9, 
+   3.8363588713963585`*^9}, {3.8363590732990875`*^9, 3.8363590759337673`*^9}, 
+   3.836359214157509*^9, {3.836359288220745*^9, 3.8363592990927057`*^9}, {
+   3.83635937346075*^9, 3.836359407776602*^9}, {3.836359456234164*^9, 
+   3.8363594804431524`*^9}, {3.8363595944146223`*^9, 
+   3.8363596398478627`*^9}, {3.8363598085742345`*^9, 
+   3.8363598412171125`*^9}, {3.836359901443638*^9, 3.836359906052124*^9}, {
+   3.8363599555218496`*^9, 3.8363599609418764`*^9}},
+ CellLabel->"In[22]:=",ExpressionUUID->"259b4794-f2b1-4bd8-bbe2-37bb1549badf"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["True"], "Print",
+ CellChangeTimes->{
+  3.8363588721639547`*^9, 3.836359054716991*^9, 3.836359408615576*^9, 
+   3.8363594894352345`*^9, 3.836359534658431*^9, {3.836359625352404*^9, 
+   3.8363596403838434`*^9}, 3.8363596731691065`*^9, 3.8363598423809156`*^9, {
+   3.8363599093432193`*^9, 3.8363599286412706`*^9}, 3.8363599614880505`*^9},
+ CellLabel->
+  "During evaluation of \
+In[22]:=",ExpressionUUID->"7752fa30-70f6-427a-baa4-6104071f199a"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     DynamicBox[ToBoxes[$CellContext`color$81596, StandardForm],
+      ImageSizeCache->{72.57421875, {2., 9.}}]},
+    {
+     DynamicBox[ToBoxes[$CellContext`message$81596, StandardForm],
+      ImageSizeCache->{85.76953125, {3., 9.}}]},
+    {
+     DynamicBox[ToBoxes[$CellContext`message2$81596, StandardForm],
+      ImageSizeCache->{92.3671875, {3., 9.}}]},
+    {"\<\"Arrows: Dynamic[arrows$81596]\"\>"},
+    {
+     DynamicBox[ToBoxes[
+       Row[$CellContext`buttons$81596], StandardForm],
+      ImageSizeCache->{119.96484375, {2.255859375, 9.}}]},
+    {
+     DynamicBox[ToBoxes[$CellContext`newgraph$81596, StandardForm],
+      ImageSizeCache->{92.3671875, {3., 9.}}]}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{
+  3.8363588721639547`*^9, 3.836359054716991*^9, 3.836359408615576*^9, 
+   3.8363594894352345`*^9, 3.836359534658431*^9, {3.836359625352404*^9, 
+   3.8363596403838434`*^9}, 3.8363596731691065`*^9, 3.8363598423809156`*^9, {
+   3.8363599093432193`*^9, 3.8363599286412706`*^9}, 3.836359961492093*^9},
+ CellLabel->
+  "During evaluation of \
+In[22]:=",ExpressionUUID->"6e03bf13-23ed-433f-8877-7a4d2e0c1d9a"]
+}, Open  ]],
+
+Cell[BoxData[
+ DynamicModuleBox[{$CellContext`v$$ = 18, $CellContext`playeralive$$ = 
+  False, $CellContext`wumpusalive$$ = True, $CellContext`newgraph$$ = 
+  Graph[{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
+   20}, {Null, 
+    SparseArray[
+    Automatic, {20, 20}, 0, {
+     1, {{0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 
+       54, 57, 60}, {{14}, {15}, {16}, {5}, {6}, {13}, {7}, {14}, {19}, {8}, {
+       15}, {20}, {2}, {11}, {19}, {2}, {12}, {20}, {3}, {11}, {16}, {4}, {
+       12}, {16}, {10}, {14}, {17}, {9}, {15}, {18}, {5}, {7}, {12}, {6}, {
+       8}, {11}, {2}, {17}, {18}, {1}, {3}, {9}, {1}, {4}, {10}, {1}, {7}, {
+       8}, {9}, {13}, {19}, {10}, {13}, {20}, {3}, {5}, {17}, {4}, {6}, {
+       18}}}, Pattern}]}, {
+   VertexLabels -> {Automatic}, GraphHighlight -> {10, 9, 15, 18}, 
+    GraphHighlightStyle -> {15 -> {VertexStyle -> {
+          RGBColor[0, 1, 0]}}, 18 -> {VertexStyle -> {
+          RGBColor[0, 1, 0]}}, 10 -> {VertexStyle -> {
+          RGBColor[1, 0, 0]}}, 9 -> {VertexStyle -> {
+          RGBColor[0, 1, 0]}}}, VertexCoordinates -> CompressedData["
+1:eJxTTMoPSmViYGAQAWIQ/SP48dLZR37Y12ftKZks8cB+33wp/bsqn/ZHpVjf
+9++9vp8BCuxN43Z58vyyt9xyomzf/Hf2QMnpeUJf90P174fph8rvh8nD9L+r
+AZnA7HCyDGTDd/s3gTvkWl//398udvPc9+DLUH237DfNfb/8mPd9e3VDjjUy
+UUf2H/6qEdN/iOnAn5UfL/kmvbA3BoPv+2H6oer3w9SngcEz+4dVIuvcH76z
+DwE5T+GTPUsYn+6muddh5jnAzIPavx9mP8y9y4C6NhQ9gJm3H2YeTB7iv8/7
+AVLKoH4=
+     "]}], $CellContext`nextTurn$$ = True, $CellContext`color$$ = RGBColor[
+  1, 0, 0], $CellContext`arrows$$ = 5, $CellContext`bool$$ = 
+  False, $CellContext`shooting$$ = 
+  True, $CellContext`loc$$, $CellContext`wumpus$$ = 18, $CellContext`bat1$$ = 
+  16, $CellContext`bat2$$ = 4, $CellContext`pit1$$ = 8, $CellContext`pit2$$ = 
+  11, $CellContext`shootingButtons$$ = {
+   Button[9, $CellContext`message$$ = StringJoin["You shot into room ", 
+       ToString[9]]; 
+    If[9 == $CellContext`wumpus$$, $CellContext`wumpusalive$$ = 
+       False; $CellContext`message$$ = "You killed the WUMPUS"; Null, 
+      If[
+       And[
+        MemberQ[$CellContext`adjVec$$, $CellContext`wumpus$$], 
+        RandomChoice[{0.75, 0.25} -> {True, False}]], $CellContext`wumpus$$ = 
+        RandomChoice[
+          AdjacencyList[$CellContext`graph, $CellContext`wumpus$$]]; 
+       If[$CellContext`wumpus$$ == $CellContext`v$$, $CellContext`message$$ = 
+         "You have been EATEN."]]]; 
+    If[9 == $CellContext`bat1$$, $CellContext`bat1$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; Null]; 
+    If[9 == $CellContext`bat2$$, $CellContext`bat2$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; 
+      Null]; $CellContext`shooting$$ = False; $CellContext`color$$ = Green; 
+    Print[$CellContext`shooting$$]; $CellContext`message2$$ = 
+     "Where would you like to move?"; Decrement[$CellContext`arrows$$]; Null], 
+   Button[15, $CellContext`message$$ = StringJoin["You shot into room ", 
+       ToString[15]]; 
+    If[15 == $CellContext`wumpus$$, $CellContext`wumpusalive$$ = 
+       False; $CellContext`message$$ = "You killed the WUMPUS"; Null, 
+      If[
+       And[
+        MemberQ[$CellContext`adjVec$$, $CellContext`wumpus$$], 
+        RandomChoice[{0.75, 0.25} -> {True, False}]], $CellContext`wumpus$$ = 
+        RandomChoice[
+          AdjacencyList[$CellContext`graph, $CellContext`wumpus$$]]; 
+       If[$CellContext`wumpus$$ == $CellContext`v$$, $CellContext`message$$ = 
+         "You have been EATEN."]]]; 
+    If[15 == $CellContext`bat1$$, $CellContext`bat1$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; Null]; 
+    If[15 == $CellContext`bat2$$, $CellContext`bat2$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; 
+      Null]; $CellContext`shooting$$ = False; $CellContext`color$$ = Green; 
+    Print[$CellContext`shooting$$]; $CellContext`message2$$ = 
+     "Where would you like to move?"; Decrement[$CellContext`arrows$$]; Null], 
+   Button[18, $CellContext`message$$ = StringJoin["You shot into room ", 
+       ToString[18]]; 
+    If[18 == $CellContext`wumpus$$, $CellContext`wumpusalive$$ = 
+       False; $CellContext`message$$ = "You killed the WUMPUS"; Null, 
+      If[
+       And[
+        MemberQ[$CellContext`adjVec$$, $CellContext`wumpus$$], 
+        RandomChoice[{0.75, 0.25} -> {True, False}]], $CellContext`wumpus$$ = 
+        RandomChoice[
+          AdjacencyList[$CellContext`graph, $CellContext`wumpus$$]]; 
+       If[$CellContext`wumpus$$ == $CellContext`v$$, $CellContext`message$$ = 
+         "You have been EATEN."]]]; 
+    If[18 == $CellContext`bat1$$, $CellContext`bat1$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; Null]; 
+    If[18 == $CellContext`bat2$$, $CellContext`bat2$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; 
+      Null]; $CellContext`shooting$$ = False; $CellContext`color$$ = Green; 
+    Print[$CellContext`shooting$$]; $CellContext`message2$$ = 
+     "Where would you like to move?"; Decrement[$CellContext`arrows$$]; 
+    Null]}, $CellContext`movingButtons$$ = {
+   Button[Null], 
+   Button[Null], 
+   Button[Null]}, $CellContext`buttons$$ = {
+   Button[9, $CellContext`message$$ = StringJoin["You shot into room ", 
+       ToString[9]]; 
+    If[9 == $CellContext`wumpus$$, $CellContext`wumpusalive$$ = 
+       False; $CellContext`message$$ = "You killed the WUMPUS"; Null, 
+      If[
+       And[
+        MemberQ[$CellContext`adjVec$$, $CellContext`wumpus$$], 
+        RandomChoice[{0.75, 0.25} -> {True, False}]], $CellContext`wumpus$$ = 
+        RandomChoice[
+          AdjacencyList[$CellContext`graph, $CellContext`wumpus$$]]; 
+       If[$CellContext`wumpus$$ == $CellContext`v$$, $CellContext`message$$ = 
+         "You have been EATEN."]]]; 
+    If[9 == $CellContext`bat1$$, $CellContext`bat1$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; Null]; 
+    If[9 == $CellContext`bat2$$, $CellContext`bat2$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; 
+      Null]; $CellContext`shooting$$ = False; $CellContext`color$$ = Green; 
+    Print[$CellContext`shooting$$]; $CellContext`message2$$ = 
+     "Where would you like to move?"; Decrement[$CellContext`arrows$$]; Null], 
+   Button[15, $CellContext`message$$ = StringJoin["You shot into room ", 
+       ToString[15]]; 
+    If[15 == $CellContext`wumpus$$, $CellContext`wumpusalive$$ = 
+       False; $CellContext`message$$ = "You killed the WUMPUS"; Null, 
+      If[
+       And[
+        MemberQ[$CellContext`adjVec$$, $CellContext`wumpus$$], 
+        RandomChoice[{0.75, 0.25} -> {True, False}]], $CellContext`wumpus$$ = 
+        RandomChoice[
+          AdjacencyList[$CellContext`graph, $CellContext`wumpus$$]]; 
+       If[$CellContext`wumpus$$ == $CellContext`v$$, $CellContext`message$$ = 
+         "You have been EATEN."]]]; 
+    If[15 == $CellContext`bat1$$, $CellContext`bat1$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; Null]; 
+    If[15 == $CellContext`bat2$$, $CellContext`bat2$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; 
+      Null]; $CellContext`shooting$$ = False; $CellContext`color$$ = Green; 
+    Print[$CellContext`shooting$$]; $CellContext`message2$$ = 
+     "Where would you like to move?"; Decrement[$CellContext`arrows$$]; Null], 
+   Button[18, $CellContext`message$$ = StringJoin["You shot into room ", 
+       ToString[18]]; 
+    If[18 == $CellContext`wumpus$$, $CellContext`wumpusalive$$ = 
+       False; $CellContext`message$$ = "You killed the WUMPUS"; Null, 
+      If[
+       And[
+        MemberQ[$CellContext`adjVec$$, $CellContext`wumpus$$], 
+        RandomChoice[{0.75, 0.25} -> {True, False}]], $CellContext`wumpus$$ = 
+        RandomChoice[
+          AdjacencyList[$CellContext`graph, $CellContext`wumpus$$]]; 
+       If[$CellContext`wumpus$$ == $CellContext`v$$, $CellContext`message$$ = 
+         "You have been EATEN."]]]; 
+    If[18 == $CellContext`bat1$$, $CellContext`bat1$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; Null]; 
+    If[18 == $CellContext`bat2$$, $CellContext`bat2$$ = 
+       0; $CellContext`message$$ = "You killed a BAT"; 
+      Null]; $CellContext`shooting$$ = False; $CellContext`color$$ = Green; 
+    Print[$CellContext`shooting$$]; $CellContext`message2$$ = 
+     "Where would you like to move?"; Decrement[$CellContext`arrows$$]; Null], 
+   Button[
+   "Don't shoot", $CellContext`shooting$$ = False; $CellContext`message2$$ = 
+     "Where would you like to move?"; $CellContext`message$$ = 
+     "You didn't shoot"]}, $CellContext`pressed$$ = 
+  False, $CellContext`layout$$ = Column[{
+    Dynamic[$CellContext`color$$], 
+    Dynamic[$CellContext`message$$], 
+    Dynamic[$CellContext`message2$$], "Arrows: Dynamic[arrows$81596]", 
+    Dynamic[
+     Row[$CellContext`buttons$$]], 
+    Dynamic[$CellContext`newgraph$$]}], $CellContext`adjVec$$ = {9, 15, 
+  18}, $CellContext`messageAssociation$$ = Association[
+  18 -> "You smell something terrible nearby.", 16 -> "You hear a rustling.", 
+   4 -> "You hear a rustling.", 8 -> 
+   "You feel a cold wind blowing from a nearby cavern.", 11 -> 
+   "You feel a cold wind blowing from a nearby cavern."], \
+$CellContext`messageDone$$ = {
+  "You smell something terrible nearby."}, $CellContext`message$$ = 
+  "You have been EATEN.", $CellContext`message2$$ = 
+  "Where would you like to shoot your arrow?"}, "Null",
+  DynamicModuleValues:>{}]], "Output",
+ CellChangeTimes->{
+  3.8363588896313705`*^9, 3.8363592480421133`*^9, 3.8363594183268776`*^9, 
+   3.83635949401234*^9, 3.8363595519966307`*^9, {3.836359630403726*^9, 
+   3.836359647167589*^9}, 3.836359770729681*^9, 3.8363598424929204`*^9, {
+   3.836359909351253*^9, 3.8363599286492677`*^9}, 3.8363599615202484`*^9},
+ CellLabel->"Out[22]=",ExpressionUUID->"6a251a3e-bb2b-46c2-8acf-7f66e5cbe84d"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Counts", "@", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"RandomChoice", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"0.75", ",", "0.25"}], "}"}], "->", 
+      RowBox[{"{", 
+       RowBox[{"True", ",", "False"}], "}"}]}], "]"}], ",", "100"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.836077149992773*^9, 3.836077243008788*^9}},
+ CellLabel->"In[12]:=",ExpressionUUID->"98ba5679-3cec-4404-91c1-a8efe20eecd4"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"True", "\[Rule]", "75"}], ",", 
+   RowBox[{"False", "\[Rule]", "25"}]}], "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{{3.8360771722701273`*^9, 3.8360772443212614`*^9}},
+ CellLabel->"Out[12]=",ExpressionUUID->"022a58e4-200d-414c-b141-b98f3b36cda9"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"If", "[", 
+    RowBox[{"running", ",", 
+     RowBox[{"x", "++"}], ",", "x"}], "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"x", ",", "0"}], "}"}], ",", 
+     RowBox[{"ControlType", "->", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"running", ",", "True"}], "}"}], ",", 
+     RowBox[{"ControlType", "->", "None"}]}], "}"}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Button", "[", 
+    RowBox[{"\"\<play\>\"", ",", 
+     RowBox[{"running", "=", "True"}]}], "]"}], ",", 
+   RowBox[{"Button", "[", 
+    RowBox[{"\"\<stop\>\"", ",", 
+     RowBox[{"running", "=", "False"}]}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.836078436904517*^9, 3.8360784671289444`*^9}},
+ CellLabel->"In[2]:=",ExpressionUUID->"a54f0583-08f2-4b02-adc0-17a3b976600d"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`running$$ = False, $CellContext`x$$ = 119, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`x$$], 0}}, {{
+       Hold[$CellContext`running$$], True}}, {
+      Hold[
+       Button["play", $CellContext`running$$ = True]], 
+      Manipulate`Dump`ThisIsNotAControl}, {
+      Hold[
+       Button["stop", $CellContext`running$$ = False]], 
+      Manipulate`Dump`ThisIsNotAControl}}, Typeset`size$$ = {
+    21.44238218329847, {0., 9.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`running$$ = True, $CellContext`x$$ = 0}, 
+      "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> If[$CellContext`running$$, 
+        Increment[$CellContext`x$$], $CellContext`x$$], 
+      "Specifications" :> {{{$CellContext`x$$, 0}, ControlType -> 
+         None}, {{$CellContext`running$$, True}, ControlType -> None}, 
+        Button["play", $CellContext`running$$ = True], 
+        Button["stop", $CellContext`running$$ = False]}, "Options" :> {}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{72., {65.13403328722343, 70.86596671277657}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.8360784690570917`*^9},
+ CellLabel->"Out[2]=",ExpressionUUID->"2414d5b6-0fdd-41ac-a714-f0fe75ec1a41"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{834., 886.8},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+TaggingRules->Association["TryRealOnly" -> False],
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (June 19, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"2f691aae-051f-45f0-b183-c1759e1a297c"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 345, 7, 98, "Title",ExpressionUUID->"9fa6dae2-7f12-47fe-9ad6-0086f8e2e285"],
+Cell[928, 31, 721, 17, 219, "Text",ExpressionUUID->"cf854f2f-9d18-4271-bf5e-929571cf8b4c"],
+Cell[1652, 50, 154, 3, 32, "Item",ExpressionUUID->"47d245a9-4403-46fd-a42d-bb45c153de74"],
+Cell[1809, 55, 160, 3, 32, "Item",ExpressionUUID->"f24e9b06-a5d1-41e4-bebe-641495e67185"],
+Cell[1972, 60, 165, 3, 32, "Item",ExpressionUUID->"33a867ba-f20b-40a7-ab38-6be916881842"],
+Cell[2140, 65, 758, 20, 219, "Text",ExpressionUUID->"81aae0ae-338b-4a8d-bcad-b364a227b918"],
+Cell[2901, 87, 244, 4, 32, "Item",ExpressionUUID->"6faf6408-47e7-4173-b53a-d41979b73b7e"],
+Cell[3148, 93, 225, 4, 32, "Item",ExpressionUUID->"4ed2da3f-ea71-4278-b58d-f160a6b4a210"],
+Cell[3376, 99, 318, 7, 32, "Item",ExpressionUUID->"703aea97-31a9-43bd-a42c-4f7a690ba588"],
+Cell[3697, 108, 452, 9, 81, "Text",ExpressionUUID->"b4c1b345-ec97-420a-af85-2cf78b829c48"],
+Cell[CellGroupData[{
+Cell[4174, 121, 7911, 171, 504, "Input",ExpressionUUID->"0caca9ec-2843-4be2-922c-07677c2aaab2"],
+Cell[12088, 294, 6758, 141, 360, "Output",ExpressionUUID->"d69fb5cd-0246-4e30-91bd-42b61438d2da"]
+}, Open  ]],
+Cell[18861, 438, 18645, 366, 1608, "Input",ExpressionUUID->"af4c0e03-6419-4c84-83e0-3cd3db57b122"],
+Cell[CellGroupData[{
+Cell[37531, 808, 155, 3, 67, "Section",ExpressionUUID->"6b2a6c8e-5adb-4387-8b22-8705410d5353"],
+Cell[CellGroupData[{
+Cell[37711, 815, 17098, 346, 2027, "Input",ExpressionUUID->"259b4794-f2b1-4bd8-bbe2-37bb1549badf"],
+Cell[CellGroupData[{
+Cell[54834, 1165, 454, 8, 22, "Print",ExpressionUUID->"7752fa30-70f6-427a-baa4-6104071f199a"],
+Cell[55291, 1175, 1312, 31, 106, "Print",ExpressionUUID->"6e03bf13-23ed-433f-8877-7a4d2e0c1d9a"]
+}, Open  ]],
+Cell[56618, 1209, 9753, 176, 55, "Output",ExpressionUUID->"6a251a3e-bb2b-46c2-8acf-7f66e5cbe84d"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[66408, 1390, 452, 12, 28, "Input",ExpressionUUID->"98ba5679-3cec-4404-91c1-a8efe20eecd4"],
+Cell[66863, 1404, 326, 6, 32, "Output",ExpressionUUID->"022a58e4-200d-414c-b141-b98f3b36cda9"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[67226, 1415, 936, 25, 86, "Input",ExpressionUUID->"a54f0583-08f2-4b02-adc0-17a3b976600d"],
+Cell[68165, 1442, 2180, 44, 155, "Output",ExpressionUUID->"2414d5b6-0fdd-41ac-a714-f0fe75ec1a41"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

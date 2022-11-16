@@ -1,0 +1,223 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8121,        215]
+NotebookOptionsPosition[      7007,        188]
+NotebookOutlinePosition[      7418,        204]
+CellTagsIndexPosition[      7375,        201]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Penney\[CloseCurlyQuote]s Game", "Title",
+ CellChangeTimes->{{3.833998411925428*^9, 
+  3.833998414190811*^9}},ExpressionUUID->"068e0f92-6509-4e7a-b9d0-\
+450a04f907be"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AskFunction", "[", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"guess", ",", "comp", ",", "flips"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"RandomChoice", "[", 
+         RowBox[{"{", 
+          RowBox[{"True", ",", "False"}], "}"}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"comp", "=", 
+          RowBox[{"StringJoin", "@", 
+           RowBox[{"RandomChoice", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{"\"\<H\>\"", ",", "\"\<T\>\""}], "}"}], ",", "3"}], 
+            "]"}]}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", "\"\<Computer picks first!\>\"", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<Computer's choice: \>\"", "<>", "comp"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"guess", "=", 
+          RowBox[{"Ask", "[", 
+           RowBox[{"\"\<What's your pick?\>\"", "->", "\"\<String\>\""}], 
+           "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<Your choice: \>\"", "<>", "guess"}], "]"}]}], 
+        "\[IndentingNewLine]", ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", "\"\<You pick first!\>\"", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"guess", "=", 
+          RowBox[{"Ask", "[", 
+           RowBox[{"\"\<What's your pick?\>\"", "->", "\"\<String\>\""}], 
+           "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"comp", "=", 
+          RowBox[{"StringJoin", "[", 
+           RowBox[{
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"StringTake", "[", 
+                RowBox[{"guess", ",", 
+                 RowBox[{"{", "2", "}"}]}], "]"}], "==", "\"\<H\>\""}], ",", 
+              "\"\<T\>\"", ",", "\"\<H\>\""}], "]"}], ",", 
+            RowBox[{"StringTake", "[", 
+             RowBox[{"guess", ",", "2"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<Your choice: \>\"", "<>", "guess"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<Computer's choice: \>\"", "<>", "comp"}], "]"}], 
+         ";"}]}], "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"flips", "=", 
+       RowBox[{"NestWhileList", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"StringJoin", "[", 
+           RowBox[{"#", ",", 
+            RowBox[{"RandomChoice", "[", 
+             RowBox[{"{", 
+              RowBox[{"\"\<H\>\"", ",", "\"\<T\>\""}], "}"}], "]"}]}], "]"}], 
+          "&"}], ",", 
+         RowBox[{"RandomChoice", "[", 
+          RowBox[{"{", 
+           RowBox[{"\"\<H\>\"", ",", "\"\<T\>\""}], "}"}], "]"}], ",", 
+         RowBox[{
+          RowBox[{"!", 
+           RowBox[{"StringContainsQ", "[", 
+            RowBox[{"#", ",", 
+             RowBox[{"___", "~~", 
+              RowBox[{"guess", "|", "comp"}]}]}], "]"}]}], "&"}]}], "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"Print", "[", 
+       RowBox[{"flips", "//", "Column"}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"StringTake", "[", 
+          RowBox[{
+           RowBox[{"Last", "@", "flips"}], ",", 
+           RowBox[{"-", 
+            RowBox[{"StringLength", "[", "guess", "]"}]}]}], "]"}], "==", 
+         "guess"}], ",", " ", 
+        RowBox[{"Print", "[", "\"\<You won \[HappySmiley]\>\"", "]"}], ",", 
+        RowBox[{"Print", "[", "\"\<Computer wins \[SadSmiley]\>\"", "]"}]}], 
+       "]"}]}]}], "\[IndentingNewLine]", "]"}], "\[IndentingNewLine]", "]"}], 
+  "[", "]"}]], "Input",
+ CellChangeTimes->{{3.8340098538765435`*^9, 3.834009858140418*^9}, {
+   3.8340099942386527`*^9, 3.834010193625667*^9}, {3.834010472194869*^9, 
+   3.834010474073505*^9}, {3.8340105678657365`*^9, 3.8340106280009193`*^9}, {
+   3.834010754493528*^9, 3.834010765030711*^9}, {3.834010828790351*^9, 
+   3.834010903610629*^9}, 3.8340109500403795`*^9, {3.8340110030666475`*^9, 
+   3.8340110196369057`*^9}, {3.8340110516257524`*^9, 
+   3.8340110520648127`*^9}, {3.8340110821683245`*^9, 3.834011087862599*^9}, {
+   3.834011137072*^9, 3.834011147786475*^9}, {3.8340112308498735`*^9, 
+   3.834011273598131*^9}, {3.834011789674281*^9, 3.8340117976403956`*^9}, {
+   3.834011840753217*^9, 3.8340118606324615`*^9}, {3.834011908151819*^9, 
+   3.834011973776991*^9}, 
+   3.8340120208940134`*^9},ExpressionUUID->"90e68950-3aab-4c38-a2ad-\
+ccb77c1fcd0f"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Computer picks first!\"\>"], "Print",
+ CellChangeTimes->{3.834011974875499*^9},
+ CellLabel->
+  "During evaluation of \
+In[254]:=",ExpressionUUID->"2a2c8b90-419a-41b1-b40a-f09b64fcb1b5"],
+
+Cell[BoxData["\<\"Computer's choice: HTT\"\>"], "Print",
+ CellChangeTimes->{3.8340119748860197`*^9},
+ CellLabel->
+  "During evaluation of \
+In[254]:=",ExpressionUUID->"3a5aafaa-be65-4b13-a0cb-b01e0c496b70"],
+
+Cell[BoxData["\<\"Your choice: THT\"\>"], "Print",
+ CellChangeTimes->{3.834011981527156*^9},
+ CellLabel->
+  "During evaluation of \
+In[254]:=",ExpressionUUID->"0661833b-355d-4fda-b24d-64aff08977dd"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"H\"\>"},
+    {"\<\"HT\"\>"},
+    {"\<\"HTT\"\>"}
+   },
+   DefaultBaseStyle->"Column",
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Column"]], "Print",
+ CellChangeTimes->{3.834011981536972*^9},
+ CellLabel->
+  "During evaluation of \
+In[254]:=",ExpressionUUID->"d36f3e04-a01c-4cbc-a545-a3a0e1b2d6d7"],
+
+Cell[BoxData["\<\"Computer wins \[SadSmiley]\"\>"], "Print",
+ CellChangeTimes->{3.834011981536972*^9},
+ CellLabel->
+  "During evaluation of \
+In[254]:=",ExpressionUUID->"a0cdf637-6948-44ab-a4c9-7148f0583683"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[BoxData["Clou"], "Input",
+ CellChangeTimes->{{3.8340120542562046`*^9, 
+  3.834012054772277*^9}},ExpressionUUID->"f6430673-6123-4085-bb7c-\
+02cbbfda3964"]
+}, Open  ]]
+},
+WindowSize->{644.4, 891.5999999999999},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (May 11, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"6ee80a4a-a4c5-4e69-a9b1-f3a255bc3b5f"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 173, 3, 98, "Title",ExpressionUUID->"068e0f92-6509-4e7a-b9d0-450a04f907be"],
+Cell[CellGroupData[{
+Cell[778, 29, 4756, 108, 467, "Input",ExpressionUUID->"90e68950-3aab-4c38-a2ad-ccb77c1fcd0f"],
+Cell[CellGroupData[{
+Cell[5559, 141, 203, 4, 22, "Print",ExpressionUUID->"2a2c8b90-419a-41b1-b40a-f09b64fcb1b5"],
+Cell[5765, 147, 206, 4, 22, "Print",ExpressionUUID->"3a5aafaa-be65-4b13-a0cb-b01e0c496b70"],
+Cell[5974, 153, 198, 4, 22, "Print",ExpressionUUID->"0661833b-355d-4fda-b24d-64aff08977dd"],
+Cell[6175, 159, 420, 13, 52, "Print",ExpressionUUID->"d36f3e04-a01c-4cbc-a545-a3a0e1b2d6d7"],
+Cell[6598, 174, 208, 4, 22, "Print",ExpressionUUID->"a0cdf637-6948-44ab-a4c9-7148f0583683"]
+}, Open  ]]
+}, Open  ]],
+Cell[6833, 182, 158, 3, 28, "Input",ExpressionUUID->"f6430673-6123-4085-bb7c-02cbbfda3964"]
+}, Open  ]]
+}
+]
+*)
+
