@@ -1,0 +1,331 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     11435,        323]
+NotebookOptionsPosition[      9344,        276]
+NotebookOutlinePosition[      9762,        292]
+CellTagsIndexPosition[      9719,        289]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[ButtonBox["Abundant Odd Numbers",
+ BaseStyle->"Hyperlink",
+ ButtonData->{
+   URL["https://rosettacode.org/wiki/Abundant_odd_numbers"], None},
+ ButtonNote->"https://rosettacode.org/wiki/Abundant_odd_numbers"]], "Title",
+ CellChangeTimes->{{3.834199204776148*^9, 
+  3.834199222903349*^9}},ExpressionUUID->"248ba0dd-d1a3-4742-9038-\
+68a65fe6e7a3"],
+
+Cell[TextData[{
+ "An abundant number is a number ",
+ Cell[BoxData[
+  FormBox["n", TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "b23f27b9-22c8-4ccd-9af7-cf13b27bad13"],
+ " for which the sum of divisors ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    RowBox[{"\[Sigma]", "(", "n", ")"}], ">", 
+    RowBox[{"2", 
+     RowBox[{"n", "."}]}]}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "65898c5d-3d66-46d6-8415-684e0e4ae9d9"]
+}], "Text",
+ CellChangeTimes->{{3.8341994041157217`*^9, 
+  3.8341994886710377`*^9}},ExpressionUUID->"905d962b-24d2-44aa-bee1-\
+96f609c8b789"],
+
+Cell[CellGroupData[{
+
+Cell["Task", "Subsubsection",
+ CellChangeTimes->{{3.834199493088873*^9, 
+  3.834199494594263*^9}},ExpressionUUID->"8e2c404b-1575-43dc-a27d-\
+54705a8b7a83"],
+
+Cell["\<\
+Find and display here: at least the first 25 abundant odd numbers and their \
+divisor sum\
+\>", "Item",
+ CellChangeTimes->{{3.8341995265310535`*^9, 3.834199551868325*^9}, {
+  3.8341995825866194`*^9, 
+  3.834199585821627*^9}},ExpressionUUID->"af4e4cea-a6b0-4e8d-bb67-\
+8f0ed9edd42d"],
+
+Cell["\<\
+Find and display here: the one thousandth abundant odd number and its divisor \
+sum\
+\>", "Item",
+ CellChangeTimes->{{3.8341995265310535`*^9, 3.834199551868325*^9}, {
+  3.8341995825866194`*^9, 
+  3.834199631478689*^9}},ExpressionUUID->"44ed5b72-71bf-4d6f-98f3-\
+76858f5fe7c5"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Find and display here: the first abundant odd number greater than one billion \
+and its divisor sum.\
+\>", "Item",
+ CellChangeTimes->{{3.8341995265310535`*^9, 3.834199551868325*^9}, {
+  3.8341995825866194`*^9, 
+  3.8341996719898896`*^9}},ExpressionUUID->"5e1b2161-0c48-4969-82ec-\
+00bf0d0b53aa"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"OddAbundantNumberList", "[", 
+   RowBox[{"k_Integer", ",", 
+    RowBox[{"start_Integer", ":", "945"}]}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"n", "=", "0"}], ",", 
+      RowBox[{"test", "=", 
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{"OddQ", "[", "start", "]"}], ",", "start", ",", 
+         RowBox[{"start", "+", "1"}]}], "]"}]}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{"(*", 
+     RowBox[{
+     "945", " ", "is", " ", "the", " ", "first", " ", "odd", " ", "abundant", 
+      " ", "number"}], "*)"}], "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Reap", "[", "\[IndentingNewLine]", 
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{"n", "<", "k"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"Greater", "[", 
+              RowBox[{"#", ",", 
+               RowBox[{"2", "*", "test"}]}], "]"}], ",", 
+             "\[IndentingNewLine]", 
+             RowBox[{
+              RowBox[{"Sow", "[", 
+               RowBox[{"{", 
+                RowBox[{"test", ",", "#"}], "}"}], "]"}], ";", 
+              RowBox[{"n", "++"}]}]}], "\[IndentingNewLine]", "]"}], "&"}], 
+          "@", 
+          RowBox[{"Total", "@", 
+           RowBox[{"Divisors", "@", "test"}]}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"test", "+=", "2"}], ";"}]}], "\[IndentingNewLine]", "]"}], 
+      "]"}], "[", 
+     RowBox[{"[", 
+      RowBox[{"2", ",", "1"}], "]"}], "]"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.834198241590699*^9, 3.834198260739233*^9}, {
+   3.8341984514630785`*^9, 3.834198505478854*^9}, {3.8341985890346694`*^9, 
+   3.8341986108167753`*^9}, {3.8341986422113466`*^9, 
+   3.8341987834489326`*^9}, {3.8341988270023546`*^9, 3.8341988443359294`*^9}, 
+   3.8342376461715593`*^9, {3.834237697625583*^9, 3.8342377077138214`*^9}, 
+   3.8342377382307367`*^9, {3.8342377766424003`*^9, 3.8342378462173147`*^9}, {
+   3.8342378767371783`*^9, 3.834238019261225*^9}, {3.834238094937321*^9, 
+   3.8342380950910597`*^9}, {3.834238130981374*^9, 3.83423814222528*^9}, {
+   3.8342381811820965`*^9, 3.834238241933895*^9}, 3.8342382911574965`*^9, {
+   3.834240917057451*^9, 3.834240929174198*^9}, {3.834240966281885*^9, 
+   3.834240982275455*^9}, {3.8342410321764946`*^9, 3.834241041407866*^9}, {
+   3.834241307272241*^9, 3.8342413402657256`*^9}, {3.8342414678025627`*^9, 
+   3.8342414951095552`*^9}, {3.834241542919342*^9, 3.834241754491147*^9}, {
+   3.8342419884248457`*^9, 3.83424208906164*^9}, {3.8342421405535417`*^9, 
+   3.8342421697398367`*^9}},
+ CellLabel->"In[75]:=",ExpressionUUID->"29ecc45e-ecb6-42dc-a88b-5c278baebb15"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["First task", "Subsubsection",
+ CellChangeTimes->{{3.834242195141342*^9, 
+  3.83424220203718*^9}},ExpressionUUID->"2e07e87b-f526-449a-aa72-\
+6c2d195530d6"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"OddAbundantNumberList", "[", "25", "]"}]], "Input",
+ CellChangeTimes->{{3.834242176959097*^9, 3.8342422103730707`*^9}},
+ CellLabel->"In[76]:=",ExpressionUUID->"1ee3e31d-f09f-4c3f-9c24-8df1055f8e44"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"945", ",", "1920"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"1575", ",", "3224"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"2205", ",", "4446"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"2835", ",", "5808"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"3465", ",", "7488"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"4095", ",", "8736"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"4725", ",", "9920"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"5355", ",", "11232"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"5775", ",", "11904"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"5985", ",", "12480"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"6435", ",", "13104"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"6615", ",", "13680"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"6825", ",", "13888"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"7245", ",", "14976"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"7425", ",", "14880"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"7875", ",", "16224"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"8085", ",", "16416"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"8415", ",", "16848"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"8505", ",", "17472"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"8925", ",", "17856"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"9135", ",", "18720"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"9555", ",", "19152"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"9765", ",", "19968"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"10395", ",", "23040"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"11025", ",", "22971"}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.834242210627076*^9},
+ CellLabel->"Out[76]=",ExpressionUUID->"76c911cc-ec44-46ab-a927-017b37689908"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Second Task", "Subsubsection",
+ CellChangeTimes->{{3.834242216418133*^9, 
+  3.8342422201277423`*^9}},ExpressionUUID->"4e2b674b-4d8e-4fd4-a161-\
+a548efd8b52d"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Last", "@", 
+  RowBox[{"OddAbundantNumberList", "[", "1000", "]"}]}]], "Input",
+ CellChangeTimes->{{3.83424242020759*^9, 3.8342424338718023`*^9}},
+ CellLabel->"In[80]:=",ExpressionUUID->"161504f2-68c9-46fb-8ef6-7323846ed728"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"492975", ",", "1012336"}], "}"}]], "Output",
+ CellChangeTimes->{{3.834242426070899*^9, 3.834242435435367*^9}},
+ CellLabel->"Out[80]=",ExpressionUUID->"d867956a-fbb3-490d-8239-2082c2b5fe6d"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Third Task", "Subsubsection",
+ CellChangeTimes->{{3.834242409469324*^9, 
+  3.834242413210377*^9}},ExpressionUUID->"e32f8e83-a1cf-46ff-b409-\
+82662f0c9975"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Flatten", "@", 
+  RowBox[{"OddAbundantNumberList", "[", 
+   RowBox[{"1", ",", 
+    SuperscriptBox["10", "9"]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.8342423052224526`*^9, 3.834242315951584*^9}, {
+  3.8342431937173862`*^9, 3.8342431948583736`*^9}},
+ CellLabel->"In[81]:=",ExpressionUUID->"cef1dba9-b3d6-4b32-a6de-3a8e827e7f4f"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"1000000575", ",", "2083561584"}], "}"}]], "Output",
+ CellChangeTimes->{{3.8342423106620426`*^9, 3.8342423162534018`*^9}, 
+   3.8342431961412334`*^9},
+ CellLabel->"Out[81]=",ExpressionUUID->"90bd611c-e92d-476a-89f7-04ac7a1cdf31"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{571.8, 611.4},
+WindowMargins->{{Automatic, 84}, {115.20000000000005`, Automatic}},
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (May 11, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"b13fba88-f9b0-4118-b190-6d818faa0916"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 358, 7, 98, "Title",ExpressionUUID->"248ba0dd-d1a3-4742-9038-68a65fe6e7a3"],
+Cell[941, 31, 608, 18, 53, "Text",ExpressionUUID->"905d962b-24d2-44aa-bee1-96f609c8b789"],
+Cell[CellGroupData[{
+Cell[1574, 53, 155, 3, 45, "Subsubsection",ExpressionUUID->"8e2c404b-1575-43dc-a27d-54705a8b7a83"],
+Cell[1732, 58, 292, 7, 53, "Item",ExpressionUUID->"af4e4cea-a6b0-4e8d-bb67-8f0ed9edd42d"],
+Cell[2027, 67, 286, 7, 53, "Item",ExpressionUUID->"44ed5b72-71bf-4d6f-98f3-76858f5fe7c5"],
+Cell[CellGroupData[{
+Cell[2338, 78, 305, 7, 53, "Item",ExpressionUUID->"5e1b2161-0c48-4969-82ec-00bf0d0b53aa"],
+Cell[2646, 87, 2802, 62, 219, "Input",ExpressionUUID->"29ecc45e-ecb6-42dc-a88b-5c278baebb15"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5497, 155, 160, 3, 45, "Subsubsection",ExpressionUUID->"2e07e87b-f526-449a-aa72-6c2d195530d6"],
+Cell[CellGroupData[{
+Cell[5682, 162, 222, 3, 28, "Input",ExpressionUUID->"1ee3e31d-f09f-4c3f-9c24-8df1055f8e44"],
+Cell[5907, 167, 1818, 54, 147, "Output",ExpressionUUID->"76c911cc-ec44-46ab-a927-017b37689908"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7774, 227, 164, 3, 45, "Subsubsection",ExpressionUUID->"4e2b674b-4d8e-4fd4-a161-a548efd8b52d"],
+Cell[CellGroupData[{
+Cell[7963, 234, 249, 4, 28, "Input",ExpressionUUID->"161504f2-68c9-46fb-8ef6-7323846ed728"],
+Cell[8215, 240, 229, 4, 32, "Output",ExpressionUUID->"d867956a-fbb3-490d-8239-2082c2b5fe6d"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8493, 250, 161, 3, 45, "Subsubsection",ExpressionUUID->"e32f8e83-a1cf-46ff-b409-82662f0c9975"],
+Cell[CellGroupData[{
+Cell[8679, 257, 354, 7, 31, "Input",ExpressionUUID->"cef1dba9-b3d6-4b32-a6de-3a8e827e7f4f"],
+Cell[9036, 266, 268, 5, 32, "Output",ExpressionUUID->"90bd611c-e92d-476a-89f7-04ac7a1cdf31"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

@@ -1,0 +1,193 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      6459,        185]
+NotebookOptionsPosition[      5299,        156]
+NotebookOutlinePosition[      5716,        172]
+CellTagsIndexPosition[      5673,        169]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[ButtonBox["Amicable pairs",
+ BaseStyle->"Hyperlink",
+ ButtonData->{
+   URL["https://rosettacode.org/wiki/Amicable_pairs"], None},
+ ButtonNote->"https://rosettacode.org/wiki/Amicable_pairs"]], "Title",
+ CellChangeTimes->{{3.8342463105197544`*^9, 
+  3.8342463269074955`*^9}},ExpressionUUID->"b0a5bd08-82ab-4e34-8ce1-\
+e3cfc7271f2d"],
+
+Cell[TextData[{
+ "Two integers ",
+ Cell[BoxData[
+  FormBox["N", TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "50935ff1-3984-478e-aa7f-4013dcd3574e"],
+ " and ",
+ Cell[BoxData[
+  FormBox["M", TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "cf8127b9-a5a5-4f25-88e1-2b63e40f332c"],
+ " are said to be amicable pairs if ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"N", "!=", "M"}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "d19e53e4-f7b0-4da4-b3b0-66737c36493f"],
+ " and the sum of the proper divisors of ",
+ Cell[BoxData[
+  FormBox["N", TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "e198b7db-d1cb-4fca-b1dd-ac07b788a246"],
+ " equals ",
+ Cell[BoxData[
+  FormBox["M", TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "f6b4a315-c8ac-4752-a7de-4b1c7cfa2acb"],
+ " and vice versa. "
+}], "Text",
+ CellChangeTimes->{{3.834246340680425*^9, 
+  3.8342463959471383`*^9}},ExpressionUUID->"c154448d-c49b-43bb-b05c-\
+edc66b6f2b86"],
+
+Cell[CellGroupData[{
+
+Cell["Task", "Section",
+ CellChangeTimes->{{3.8342464730553427`*^9, 
+  3.8342464741107764`*^9}},ExpressionUUID->"10c1d231-044a-43d3-b7f3-\
+29e6d4e4be7b"],
+
+Cell["Calculate and show here the amicable pairs below 20,000", "Text",
+ CellChangeTimes->{{3.8342464763451033`*^9, 
+  3.8342464906574945`*^9}},ExpressionUUID->"0188d5c6-c2a2-41aa-8da9-\
+284bbdd3f0a4"],
+
+Cell[CellGroupData[{
+
+Cell["Less Brute Force-y", "Subsubsection",
+ CellChangeTimes->{{3.8343201314244657`*^9, 
+  3.83432013767223*^9}},ExpressionUUID->"cef08d45-1699-411c-9030-\
+bb7d2be41b6f"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AmicableQ", "[", "n_", "]"}], ":=", 
+  RowBox[{"With", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"divadd", "=", 
+      RowBox[{"Total", "@*", "Most", "@*", "Divisors"}]}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"n", "!=", "#"}], "&&", 
+       RowBox[{"n", "==", 
+        RowBox[{"divadd", "[", "#", "]"}]}]}], "&"}], "@", 
+     RowBox[{"divadd", "[", "n", "]"}]}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.834320176242157*^9, 3.834320182555008*^9}, {
+  3.8343204224963083`*^9, 3.8343204314130116`*^9}, {3.8343205026100483`*^9, 
+  3.8343205506333427`*^9}, {3.83432061880162*^9, 3.83432062217425*^9}, {
+  3.8343206660771008`*^9, 3.834320743673916*^9}, {3.83432083053207*^9, 
+  3.8343208833837233`*^9}, {3.834320915635213*^9, 3.8343209351394434`*^9}, {
+  3.8343210249387245`*^9, 3.8343210368775406`*^9}, {3.834321099493978*^9, 
+  3.8343211151288767`*^9}},
+ CellLabel->"In[26]:=",ExpressionUUID->"3886ab45-a14f-44ae-aec2-41e715627b2b"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"AbsoluteTiming", "[", 
+  RowBox[{"Grid", "@", 
+   RowBox[{"Partition", "[", 
+    RowBox[{
+     RowBox[{"Select", "[", 
+      RowBox[{
+       RowBox[{"Range", "[", 
+        RowBox[{"4", ",", "20000"}], "]"}], ",", "AmicableQ"}], "]"}], ",", 
+     "2"}], "]"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.8343207067828827`*^9, 3.8343207101503706`*^9}, {
+  3.834321130297615*^9, 3.834321140952367*^9}, {3.834321208095892*^9, 
+  3.834321252114421*^9}, {3.834321341554143*^9, 3.8343213486247425`*^9}, {
+  3.834321389768507*^9, 3.834321389893643*^9}, {3.8343214740894966`*^9, 
+  3.834321474296321*^9}, {3.8343215208399305`*^9, 3.834321525190549*^9}, {
+  3.8343216306123056`*^9, 3.8343216333064036`*^9}},
+ CellLabel->"In[44]:=",ExpressionUUID->"f7ffe003-f47e-4aec-97cd-1977e8f391e8"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.364501`", ",", 
+   TagBox[GridBox[{
+      {"220", "284"},
+      {"1184", "1210"},
+      {"2620", "2924"},
+      {"5020", "5564"},
+      {"6232", "6368"},
+      {"10744", "10856"},
+      {"12285", "14595"},
+      {"17296", "18416"}
+     },
+     AutoDelete->False,
+     GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+    "Grid"]}], "}"}]], "Output",
+ CellChangeTimes->{{3.8343207105907965`*^9, 3.8343207479841514`*^9}, {
+   3.8343211220265255`*^9, 3.834321142274988*^9}, 3.8343212089864817`*^9, {
+   3.834321243038742*^9, 3.83432125276943*^9}, 3.834321349377405*^9, 
+   3.834321391262532*^9, 3.834321476818894*^9, 3.834321526522312*^9, {
+   3.834321634063583*^9, 3.8343216417604656`*^9}},
+ CellLabel->"Out[44]=",ExpressionUUID->"7df057d5-24f0-40b1-a6a6-e26fb3f5724c"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{694.8, 888.},
+WindowMargins->{{Automatic, -3}, {Automatic, 1.7999999999999998`}},
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (May 11, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"f6628879-50f6-4088-ac75-bdc2de839083"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 344, 7, 98, "Title",ExpressionUUID->"b0a5bd08-82ab-4e34-8ce1-e3cfc7271f2d"],
+Cell[927, 31, 1020, 31, 58, "Text",ExpressionUUID->"c154448d-c49b-43bb-b05c-edc66b6f2b86"],
+Cell[CellGroupData[{
+Cell[1972, 66, 153, 3, 67, "Section",ExpressionUUID->"10c1d231-044a-43d3-b7f3-29e6d4e4be7b"],
+Cell[2128, 71, 201, 3, 35, "Text",ExpressionUUID->"0188d5c6-c2a2-41aa-8da9-284bbdd3f0a4"],
+Cell[CellGroupData[{
+Cell[2354, 78, 170, 3, 45, "Subsubsection",ExpressionUUID->"cef08d45-1699-411c-9030-bb7d2be41b6f"],
+Cell[2527, 83, 1061, 24, 67, "Input",ExpressionUUID->"3886ab45-a14f-44ae-aec2-41e715627b2b"],
+Cell[CellGroupData[{
+Cell[3613, 111, 798, 16, 28, "Input",ExpressionUUID->"f7ffe003-f47e-4aec-97cd-1977e8f391e8"],
+Cell[4414, 129, 833, 21, 151, "Output",ExpressionUUID->"7df057d5-24f0-40b1-a6a6-e26fb3f5724c"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

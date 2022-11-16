@@ -1,0 +1,210 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      7624,        202]
+NotebookOptionsPosition[      6387,        174]
+NotebookOutlinePosition[      6817,        190]
+CellTagsIndexPosition[      6774,        187]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[ButtonBox["Almost Prime",
+ BaseStyle->"Hyperlink",
+ ButtonData->{
+   URL["https://rosettacode.org/wiki/Almost_prime"], None},
+ ButtonNote->"https://rosettacode.org/wiki/Almost_prime"]], "Title",
+ CellChangeTimes->{{3.8342434261813593`*^9, 
+  3.834243440070655*^9}},ExpressionUUID->"a148b2bf-4905-4d24-9d60-\
+397767e24f65"],
+
+Cell[BoxData[
+ RowBox[{"A", Cell[
+  "k-almost-prime",ExpressionUUID->"20f1d898-a5d7-4d93-b329-72385bc6da91"], 
+  "is", "a", "natural", "number", Cell[
+  "n",ExpressionUUID->"4ab59843-54ea-4353-b6fe-a3d6b08d790e"], "that", "is", 
+  "the", "product", "of", Cell[
+  "k",ExpressionUUID->"a911328f-ad69-4c04-a718-74ef7049f07f"], 
+  RowBox[{"(", 
+   RowBox[{"possibly", "identical"}], ")"}], 
+  RowBox[{"primes", "."}]}]], "Text",
+ CellChangeTimes->{{3.8342434431385098`*^9, 3.8342434647121267`*^9}, {
+  3.8342435099538403`*^9, 
+  3.834243565790376*^9}},ExpressionUUID->"0e9865da-0985-481f-ae6b-\
+bc791e8bbb50"],
+
+Cell[CellGroupData[{
+
+Cell["Task", "Section",
+ CellChangeTimes->{{3.834243590239195*^9, 
+  3.834243590718003*^9}},ExpressionUUID->"204f4f78-6fba-42fe-ac86-\
+14b5b35814a9"],
+
+Cell[TextData[{
+ "Write a function/method/subroutine/... that generates ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"k", "-", "almost", "-", "primes"}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "1f25d959-82bc-4808-9333-9e2aab9b2263"],
+ " and use it to create a table here of the first ten members of ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"k", "-", "almost", "-", "primes"}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "c62a80b0-6545-40c8-8857-c54d89fd7d89"],
+ " for ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"1", "<=", "k", "<=", "5."}], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "910ebdd9-38a2-41ac-b406-b33e959493e5"]
+}], "Text",
+ CellChangeTimes->{{3.834243591960377*^9, 3.83424360844759*^9}, {
+  3.834243949783926*^9, 
+  3.8342439929535713`*^9}},ExpressionUUID->"89266645-57fc-4b6c-8a4f-\
+cf1be9354f64"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FirstNKAlmostPrimes", "[", 
+   RowBox[{"k_Integer", ",", "n_Integer"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"start", "=", "2"}], ",", 
+       RowBox[{"n0", "=", "1"}]}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"Reap", "[", 
+      RowBox[{"While", "[", 
+       RowBox[{
+        RowBox[{"n0", "<=", "n"}], ",", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"k", "==", 
+            RowBox[{"Total", "@", 
+             RowBox[{
+              RowBox[{"FactorInteger", "[", "start", "]"}], "[", 
+              RowBox[{"[", 
+               RowBox[{"All", ",", "2"}], "]"}], "]"}]}]}], ",", 
+           RowBox[{
+            RowBox[{"Sow", "[", "start", "]"}], ";", 
+            RowBox[{"n0", "++"}]}]}], "]"}], ";", 
+         RowBox[{"start", "++"}]}]}], "]"}], "]"}]}], "\[IndentingNewLine]", 
+    "]"}], "[", 
+   RowBox[{"[", 
+    RowBox[{"2", ",", "1"}], "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.834244666687366*^9, 3.834244781741444*^9}, {
+   3.834244824276583*^9, 3.834244896475322*^9}, {3.83424493009381*^9, 
+   3.834244938462432*^9}, {3.8342450107326317`*^9, 3.8342450340692973`*^9}, 
+   3.8342450678603334`*^9, {3.834245124113273*^9, 3.8342451271634517`*^9}, {
+   3.834245184518839*^9, 3.8342451883813267`*^9}, {3.8342453390653906`*^9, 
+   3.8342453440567436`*^9}, {3.8342453858818803`*^9, 
+   3.8342454498710823`*^9}, {3.834245559888445*^9, 3.834245580364396*^9}, {
+   3.8342459256916585`*^9, 3.834245943532086*^9}, {3.834246067611912*^9, 
+   3.8342460678230486`*^9}},
+ CellLabel->"In[34]:=",ExpressionUUID->"b10667c2-867a-4bde-9338-279709acfc0e"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Grid", "[", 
+  RowBox[{
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"Prepend", "[", 
+      RowBox[{
+       RowBox[{"FirstNKAlmostPrimes", "[", 
+        RowBox[{"k", ",", "10"}], "]"}], ",", 
+       RowBox[{"\"\<k=\>\"", "<>", 
+        RowBox[{"ToString", "[", "k", "]"}]}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"k", ",", "5"}], "}"}]}], "]"}], ",", 
+   RowBox[{"Frame", "\[Rule]", "All"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.834245372307987*^9, 3.8342453765154676`*^9}, {
+  3.834245594815464*^9, 3.8342457163916087`*^9}, {3.8342457484879694`*^9, 
+  3.834245778415635*^9}, {3.8342458118925433`*^9, 3.8342458165357475`*^9}, {
+  3.8342458782088413`*^9, 3.8342459087922173`*^9}},
+ CellLabel->"In[35]:=",ExpressionUUID->"163381e9-a768-4886-b27b-34c234b5e2e1"],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"k=1\"\>", "2", "3", "5", "7", "11", "13", "17", "19", "23", "29"},
+    {"\<\"k=2\"\>", "4", "6", "9", "10", "14", "15", "21", "22", "25", "26"},
+    {"\<\"k=3\"\>", "8", "12", "18", "20", "27", "28", "30", "42", "44", "45"},
+    {"\<\"k=4\"\>", "16", "24", "36", "40", "54", "56", "60", "81", "84", 
+     "88"},
+    {"\<\"k=5\"\>", "32", "48", "72", "80", "108", "112", "120", "162", "168",
+      "176"}
+   },
+   AutoDelete->False,
+   GridBoxFrame->{"Columns" -> {{True}}, "Rows" -> {{True}}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{
+  3.8342457788640876`*^9, 3.834245817060116*^9, {3.8342459008923936`*^9, 
+   3.8342459091609826`*^9}, 3.8342459554911647`*^9, 3.834246071245323*^9},
+ CellLabel->"Out[35]=",ExpressionUUID->"bd11bd15-182f-4f91-b62a-1ae5405b0a5d"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.83424600164802*^9, 
+  3.834246002972727*^9}},ExpressionUUID->"f68c0c5c-9515-4fd0-bb73-\
+ac557ffef0ab"],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.8342457627116847`*^9, 
+  3.834245762712682*^9}},ExpressionUUID->"e2cd183d-426f-44c2-8412-\
+2a4ce05f243b"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{766.8, 891.5999999999999},
+WindowMargins->{{Automatic, -4.7999999999999545`}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (May 11, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"8d889fec-b0e7-4a83-975f-ec0931d4ef57"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 336, 7, 98, "Title",ExpressionUUID->"a148b2bf-4905-4d24-9d60-397767e24f65"],
+Cell[919, 31, 605, 13, 57, "Text",ExpressionUUID->"0e9865da-0985-481f-ae6b-bc791e8bbb50"],
+Cell[CellGroupData[{
+Cell[1549, 48, 149, 3, 67, "Section",ExpressionUUID->"204f4f78-6fba-42fe-ac86-14b5b35814a9"],
+Cell[1701, 53, 881, 23, 58, "Text",ExpressionUUID->"89266645-57fc-4b6c-8a4f-cf1be9354f64"],
+Cell[2585, 78, 1739, 40, 105, "Input",ExpressionUUID->"b10667c2-867a-4bde-9338-279709acfc0e"],
+Cell[CellGroupData[{
+Cell[4349, 122, 803, 18, 48, "Input",ExpressionUUID->"163381e9-a768-4886-b27b-34c234b5e2e1"],
+Cell[5155, 142, 881, 17, 112, "Output",ExpressionUUID->"bd11bd15-182f-4f91-b62a-1ae5405b0a5d"]
+}, Open  ]],
+Cell[6051, 162, 151, 3, 28, "Input",ExpressionUUID->"f68c0c5c-9515-4fd0-bb73-ac557ffef0ab"],
+Cell[6205, 167, 154, 3, 28, InheritFromParent,ExpressionUUID->"e2cd183d-426f-44c2-8412-2a4ce05f243b"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
